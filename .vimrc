@@ -8,7 +8,7 @@ set background=dark
 "set modelines=5
 
 " Default tab behavior
-set ts=8 sw=8 tw=0
+set ts=4 sw=4 tw=0
 
 " Change the <Leader> key
 "let mapleader = ","

@@ -26,38 +26,80 @@ set -o vi
 EDITOR=vi
 export EDITOR
 
-# make less more friendly for non-text input files, see lesspipe(1)
-[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+# We use promptvars
+shopt -s promptvars
+
+# Git or SVN prompts
+prompt_git() {
+    git branch &>/dev/null || return 1
+    HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
+    BRANCH="${HEAD##*/}"
+    [[ -n "$(git status 2>/dev/null | \
+        grep -F 'working directory clean')" ]] || STATUS="!"
+    printf ' (git:\033[32m%s\033[1;31m%s\033[0m) ' "${BRANCH:-unknown}" "${STATUS}"
+}
+prompt_svn() {
+    svn info &>/dev/null || return 1
+    URL="$(svn info 2>/dev/null | \
+        awk -F': ' '$1 == "URL" {print $2}')"
+    ROOT="$(svn info 2>/dev/null | \
+        awk -F': ' '$1 == "Repository Root" {print $2}')"
+    BRANCH=${URL/$ROOT}
+    BRANCH=${BRANCH#/}
+    BRANCH=${BRANCH#branches/}
+    BRANCH=${BRANCH%%/*}
+    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="!"
+    printf ' (svn:\033[32m%s\033[1;31m%s\033[0m) ' "${BRANCH:-unknown}" "${STATUS}"
+}
+prompt_vcs() {
+    prompt_git || prompt_svn
+}
+
+# Add number of background jobs, if any
+prompt_jobs() {
+    [[ -n "$(jobs)" ]] && printf '\033[1;31m{%d}\033[0m' $(jobs | sed -n '$=')
+}
 
 # We want a colored prompt, if the terminal has the capability
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
-    else
-	color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    PS1='\[\033[01;32m\]\u\[\033[01;31m\]@\[\033[01;33m\]\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
+	MY_PROMPT='\[\033[1;32m\]\u\[\033[1;31m\]@\[\033[1;33m\]\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]'
+	export CLICOLOR=1
+	LSCOLORS=ExGxFxDxCxDaDaabagecec
+	export LSCOLORS
 else
-    PS1='\u@\h:\w\$ '
+    MY_PROMPT='\u@\h:\w\'
 fi
-unset color_prompt force_color_prompt
 
-# If this is an xterm set the title to user@host:dir
+# If this is an xterm set the titlebar to user@host:dir
 case "$TERM" in
 screen*|xterm*|rxvt*)
-    PS1="\[\e]0;\u@\h: \w\a\]$PS1"
+    MY_PROMPT="\[\e]0;\u@\h: \w\a\]$MY_PROMPT"
     ;;
 *)
     ;;
 esac
+
+# Switch the prompt on or off
+prompt_on() {
+	PS1=$MY_PROMPT'$(prompt_jobs)$(prompt_vcs)'
+	if [[ $EUID -eq 0 ]]; then
+		PS1=$PS1'\[\033[1;31m\]#\[\033[0m\] '
+	elif [[ -n $SUDO_USER ]]; then
+		PS1=$PS1'\[\033[1;33m\]±\[\033[0m\] '
+	else
+		PS1=$PS1'\$ '
+	fi
+}
+prompt_off() {
+	if [[ $EUID -eq 0 ]]; then
+		PS1='# '
+	else
+		PS1='$ '
+	fi
+}
+# We default to the full features prompt
+prompt_on
 
 # Common ssh-agent for all terms
 if [ ! $?SSH_CLIENT ]; then
@@ -72,11 +114,6 @@ fi
 if [ -f `brew --prefix`/etc/bash_completion ]; then
 	. `brew --prefix`/etc/bash_completion
 fi
-
-# Colorized output
-export CLICOLOR=1
-LSCOLORS=ExGxFxDxCxDaDaabagecec
-export LSCOLORS
 
 # Java related settings
 MAVEN_OPTS="-XX:MaxPermSize=256m"
