@@ -1,34 +1,31 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-# don't put duplicate lines in the history. See bash(1) for more options
-# don't overwrite GNU Midnight Commander's setting of `ignorespace'.
-export HISTCONTROL=$HISTCONTROL${HISTCONTROL+,}ignoredups
-# ... or force ignoredups and ignorespace
-export HISTCONTROL=ignoreboth
 
+## History
+# ignoredups and ignorespace
+export HISTCONTROL=ignoreboth
+export HISTSIZE=999
+export HISTFILESIZE=9999
 # append to the history file, don't overwrite it
 shopt -s histappend
+# keep multi-seesion history fine
+PROMPT_COMMAND='history -a'
 
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
+# check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 
+## Editor related
 # vi mode
 set -o vi
+export EDITOR=vi
 
-# Common editor
-EDITOR=vi
-export EDITOR
-
+## Prompt
 # We use promptvars
 shopt -s promptvars
-
 # Git prompt
 prompt_git() {
 	# Are we in a git repository?
@@ -49,12 +46,12 @@ prompt_svn() {
     BRANCH=${BRANCH#branches/}
     BRANCH=${BRANCH%%/*}
     [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
-	printf " (svn:%s%s) " "${BRANCH:-unknown}" "${STATUS}"
+	printf "(svn:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
 }
+# We look for GIT then SVN
 prompt_vcs() {
     prompt_git || prompt_svn;
 }
-
 # Add number of background jobs, if any
 prompt_jobs() {
     [[ -n "$(jobs)" ]] && printf '{%d}' $(jobs | sed -n '$=')
@@ -65,8 +62,7 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
 	MY_PROMPT='\[\e[1;32m\]\u\[\e[31m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]'
 	export CLICOLOR=1
-	LSCOLORS=ExGxFxDxCxDaDaabagecec
-	export LSCOLORS
+	export LSCOLORS=ExGxFxDxCxDaDaabagecec
 else
     MY_PROMPT='\u@\h:\w\'
 fi
@@ -116,8 +112,7 @@ if [ -f `brew --prefix`/etc/bash_completion ]; then
 fi
 
 # Java related settings
-MAVEN_OPTS="-XX:MaxPermSize=256m"
-export MAVEN_OPTS
+export MAVEN_OPTS="-XX:MaxPermSize=256m"
 
 # Alias definitions.
 alias grep='grep --color=auto'
