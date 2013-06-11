@@ -29,41 +29,41 @@ export EDITOR
 # We use promptvars
 shopt -s promptvars
 
-# Git or SVN prompts
+# Git prompt
 prompt_git() {
+	# Are we in a git repository?
     git branch &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
-    [[ -n "$(git status 2>/dev/null | \
-        grep -F 'working directory clean')" ]] || STATUS="!"
-    printf ' (git:\033[32m%s\033[1;31m%s\033[0m) ' "${BRANCH:-unknown}" "${STATUS}"
+    [[ -n "$(git status 2>/dev/null | grep -F 'working directory clean')" ]] || STATUS="❗ "
+	printf "(git:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
 }
+# SVN prompt
 prompt_svn() {
+	# Are we in a svn repository?
     svn info &>/dev/null || return 1
-    URL="$(svn info 2>/dev/null | \
-        awk -F': ' '$1 == "URL" {print $2}')"
-    ROOT="$(svn info 2>/dev/null | \
-        awk -F': ' '$1 == "Repository Root" {print $2}')"
+    URL="$(svn info 2>/dev/null | awk -F': ' '$1 == "URL" {print $2}')"
+    ROOT="$(svn info 2>/dev/null | awk -F': ' '$1 == "Repository Root" {print $2}')"
     BRANCH=${URL/$ROOT}
     BRANCH=${BRANCH#/}
     BRANCH=${BRANCH#branches/}
     BRANCH=${BRANCH%%/*}
-    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="!"
-    printf ' (svn:\033[32m%s\033[1;31m%s\033[0m) ' "${BRANCH:-unknown}" "${STATUS}"
+    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
+	printf " (svn:%s%s) " "${BRANCH:-unknown}" "${STATUS}"
 }
 prompt_vcs() {
-    prompt_git || prompt_svn
+    prompt_git || prompt_svn;
 }
 
 # Add number of background jobs, if any
 prompt_jobs() {
-    [[ -n "$(jobs)" ]] && printf '\033[1;31m{%d}\033[0m' $(jobs | sed -n '$=')
+    [[ -n "$(jobs)" ]] && printf '{%d}' $(jobs | sed -n '$=')
 }
 
 # We want a colored prompt, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
-	MY_PROMPT='\[\033[1;32m\]\u\[\033[1;31m\]@\[\033[1;33m\]\h\[\033[0m\]:\[\033[1;34m\]\w\[\033[0m\]'
+	MY_PROMPT='\[\e[1;32m\]\u\[\e[31m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]'
 	export CLICOLOR=1
 	LSCOLORS=ExGxFxDxCxDaDaabagecec
 	export LSCOLORS
@@ -82,11 +82,11 @@ esac
 
 # Switch the prompt on or off
 prompt_on() {
-	PS1=$MY_PROMPT'$(prompt_jobs)$(prompt_vcs)'
+	PS1=$MY_PROMPT'\[\e[1;31m\]$(prompt_jobs)\[\e[0;32m\]$(prompt_vcs)\[\e[0m\]'
 	if [[ $EUID -eq 0 ]]; then
-		PS1=$PS1'\[\033[1;31m\]#\[\033[0m\] '
+		PS1=$PS1'\[\e[1;31m\]#\[\e[0m\] '
 	elif [[ -n $SUDO_USER ]]; then
-		PS1=$PS1'\[\033[1;33m\]±\[\033[0m\] '
+		PS1=$PS1'\[\e[1;33m\]±\[\e[0m\] '
 	else
 		PS1=$PS1'\$ '
 	fi
