@@ -136,3 +136,5 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 
+# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
+source ~/.svn-color/svn-color.sh
