@@ -64,7 +64,7 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	export CLICOLOR=1
 	export LSCOLORS=ExGxFxDxCxDaDaabagecec
 else
-    MY_PROMPT='\u@\h:\w\'
+    MY_PROMPT='\u@\h:\w\$'
 fi
 
 # If this is an xterm set the titlebar to user@host:dir
@@ -127,6 +127,7 @@ alias who='who -HTu'
 alias top='top -u -s 2 -S'
 alias diffpatch='diff -Naur'
 alias idiff='~/.idiff.sh'
+alias less='less -r'
 alias pstree='pstree -g 3'
 alias info='info --vi-keys'
 alias git-last-log='git log --summary HEAD^..'
