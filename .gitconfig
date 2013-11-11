@@ -1,0 +1,16 @@
+[gui]
+	encoding = utf-8
+[user]
+	name = Antoine
+	email = antoine@eshango.com
+[color]
+	ui = auto
+[merge]
+	tool = vimdiff
+[i18n]
+	commitencoding = utf-8
+[github]
+	user = tonin
+	token = 1177a006cde4cbceab6186e35b414f15
+[push]
+	default = simple
