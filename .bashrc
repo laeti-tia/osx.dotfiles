@@ -128,21 +128,26 @@ export MAVEN_OPTS="-XX:MaxPermSize=256m"
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# enable color support for some commands
+if [ -x /usr/bin/dircolors ]; then
+    eval "`dircolors -b`"
+fi
+
 # Alias definitions.
 alias grep='grep --color=auto'
-alias ls='ls -G'
-alias ll='ls -lh'
+alias ls='ls -G --color=auto'
+alias ll='ls -lh --color=auto'
+alias df='df -h'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias psa='ps aux'
 alias cwdcmd='echo -n "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 alias who='who -HTu'
-alias top='top -u -s 2 -S'
 alias diffpatch='diff -Naur'
 alias idiff='~/.idiff.sh'
 alias less='less -r'
-alias pstree='pstree -g 3'
+alias pstree='pstree -G'
 alias info='info --vi-keys'
 alias git-last-log='git log --summary HEAD^..'
 alias git-home='git --work-tree=$HOME --git-dir=$HOME/.files.git'
@@ -150,5 +155,12 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 
+# OSX only aliases
+if [ `uname` = "Darwin" ]; then
+	alias top='/usr/bin/top -u -s 2 -S'
+	alias pstree='/usr/local/bin/pstree -g 3'
+fi
+
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if svn is installed)
 svn info &>/dev/null && source ~/.svn-color/svn-color.sh
+
