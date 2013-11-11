@@ -3,13 +3,18 @@ osx.dotfiles for ~
 
 My useful OSX $HOME dot files to be replicated on each of my OSX machine.
 
-I'm making use of this repo as suggested and  described by [Kyle Fuller][1].
+I'm making use of this repo as suggested and described by [Kyle Fuller][1].
 
 To use this repo on a new machine, do:
 
-    git --work-tree=$HOME --git-dir=$HOME/.files.git clone git@github.com:tonin/osx.dotfiles.git
+    git --work-tree=$HOME --git-dir=$HOME/.files.git init
+    git --work-tree=$HOME --git-dir=$HOME/.files.git remote add origin git@github.com:tonin/osx.dotfiles.git
+    git --work-tree=$HOME --git-dir=$HOME/.files.git pull origin master
+    git --git-dir=$HOME/.files.git submodule update --init
 
 And then later only use the `git-home` command instead of `git` (see the git-home alias in `.bashrc`).
+
+You might want to clone this repository and customise some files to your needs and settings.
 
 
 Credits

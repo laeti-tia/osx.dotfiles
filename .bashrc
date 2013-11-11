@@ -23,6 +23,12 @@ shopt -s checkwinsize
 set -o vi
 export EDITOR=vi
 
+## Debian chroot, if any
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
 ## Prompt
 # We use promptvars
 shopt -s promptvars
@@ -57,6 +63,9 @@ prompt_jobs() {
     [[ -n "$(jobs)" ]] && printf '{%d}' $(jobs | sed -n '$=')
 }
 
+# TODO: add Debian chroot info, if any
+#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
 # We want a colored prompt, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	# We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
@@ -71,6 +80,8 @@ fi
 case "$TERM" in
 screen*|xterm*|rxvt*)
     MY_PROMPT="\[\e]0;\u@\h: \w\a\]$MY_PROMPT"
+# TODO: Debian chroot
+#    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
 *)
     ;;
@@ -106,13 +117,16 @@ if [ ! $?SSH_CLIENT ]; then
 	source /tmp/ssh-agent-${USER}
 fi
 
-# Bash completion (if installed with brew)
-if [ -f `brew --prefix`/etc/bash_completion ]; then
+# Bash completion, if installed with braw on OSX (should be default on Debian)
+if [[ -f /usr/local/bin/brew && -f `brew --prefix`/etc/bash_completion ]]; then
 	. `brew --prefix`/etc/bash_completion
 fi
 
 # Java related settings
 export MAVEN_OPTS="-XX:MaxPermSize=256m"
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # Alias definitions.
 alias grep='grep --color=auto'
@@ -136,5 +150,5 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 
-# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
-source ~/.svn-color/svn-color.sh
+# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if svn is installed)
+svn info &>/dev/null && source ~/.svn-color/svn-color.sh
