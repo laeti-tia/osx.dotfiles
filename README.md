@@ -1,7 +1,7 @@
 osx.dotfiles for ~
 ==================
 
-My useful OSX $HOME dot files to be replicated on each of my OSX machine.
+My useful OSX ~ dot files to be replicated on each of my OSX machines.
 
 I'm making use of this repo as suggested and described by [Kyle Fuller][1].
 
@@ -20,13 +20,13 @@ You might want to clone this repository and customise some files to your needs a
 Credits
 -------
 
-- The bash svn-color function sourced in `.bashrc` is coming from [JM Lacroix][2].
+- The bash svn-color function sourced in `.bashrc` is coming from [Jean-Michel Lacroix][2].
 - The bash `idiff.sh` script is coming from [pixelbeat.org][4]
 - The VIM fugitive git wrapper and the pathogen autoloader are from [Tim Pope][3].
 
 
-Licence
-------
+Copyright and licence
+---------------------
 
 © 2013 — Antoine Delvaux — All rights reserved.
 
