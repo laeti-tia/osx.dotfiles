@@ -34,7 +34,7 @@ fi
 shopt -s promptvars
 # Git prompt
 prompt_git() {
-	# Are we in a git repository?
+    # Are we in a git repository?
     git branch &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
@@ -43,7 +43,7 @@ prompt_git() {
 }
 # SVN prompt
 prompt_svn() {
-	# Are we in a svn repository?
+    # Are we in a svn repository?
     svn info &>/dev/null || return 1
     URL="$(svn info 2>/dev/null | awk -F': ' '$1 == "URL" {print $2}')"
     ROOT="$(svn info 2>/dev/null | awk -F': ' '$1 == "Repository Root" {print $2}')"
@@ -68,10 +68,10 @@ prompt_jobs() {
 
 # We want a colored prompt, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
-	MY_PROMPT='\[\e[1;32m\]\u\[\e[31m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]'
-	export CLICOLOR=1
-	export LSCOLORS=ExGxFxDxCxDaDaabagecec
+    # We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
+    MY_PROMPT='\[\e[1;32m\]\u\[\e[31m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]'
+    export CLICOLOR=1
+    export LSCOLORS=ExGxFxDxCxDaDaabagecec
 else
     MY_PROMPT='\u@\h:\w\$'
 fi
@@ -89,37 +89,37 @@ esac
 
 # Switch the prompt on or off
 prompt_on() {
-	PS1=$MY_PROMPT'\[\e[1;31m\]$(prompt_jobs)\[\e[0;32m\]$(prompt_vcs)\[\e[0m\]'
-	if [[ $EUID -eq 0 ]]; then
-		PS1=$PS1'\[\e[1;31m\]#\[\e[0m\] '
-	elif [[ -n $SUDO_USER ]]; then
-		PS1=$PS1'\[\e[1;33m\]±\[\e[0m\] '
-	else
-		PS1=$PS1'\$ '
-	fi
+    PS1=$MY_PROMPT'\[\e[1;31m\]$(prompt_jobs)\[\e[0;32m\]$(prompt_vcs)\[\e[0m\]'
+    if [[ $EUID -eq 0 ]]; then
+	PS1=$PS1'\[\e[1;31m\]#\[\e[0m\] '
+    elif [[ -n $SUDO_USER ]]; then
+	PS1=$PS1'\[\e[1;33m\]±\[\e[0m\] '
+    else
+	PS1=$PS1'\$ '
+    fi
 }
 prompt_off() {
-	if [[ $EUID -eq 0 ]]; then
-		PS1='# '
-	else
-		PS1='$ '
-	fi
+    if [[ $EUID -eq 0 ]]; then
+	PS1='# '
+    else
+	PS1='$ '
+    fi
 }
 # We default to the full features prompt
 prompt_on
 
 # Common ssh-agent for all terms
 if [ ! $?SSH_CLIENT ]; then
-	if [ ! -e /tmp/ssh-agent-${USER} ]; then
-		ssh-agent -s > /tmp/ssh-agent-${USER}
-		chmod 600 /tmp/ssh-agent-${USER}
-	fi
-	source /tmp/ssh-agent-${USER}
+    if [ ! -e /tmp/ssh-agent-${USER} ]; then
+	ssh-agent -s > /tmp/ssh-agent-${USER}
+	chmod 600 /tmp/ssh-agent-${USER}
+    fi
+    source /tmp/ssh-agent-${USER}
 fi
 
 # Bash completion, if installed with braw on OSX (should be default on Debian)
 if [[ -f /usr/local/bin/brew && -f `brew --prefix`/etc/bash_completion ]]; then
-	. `brew --prefix`/etc/bash_completion
+    . `brew --prefix`/etc/bash_completion
 fi
 
 # Java related settings
@@ -157,8 +157,10 @@ alias listen='lsof -n -i4TCP | grep LISTEN'
 
 # OSX only aliases
 if [ `uname` = "Darwin" ]; then
-	alias top='/usr/bin/top -u -s 2 -S'
-	alias pstree='/usr/local/bin/pstree -g 3'
+    alias top='/usr/bin/top -u -s 2 -S'
+    alias pstree='/usr/local/bin/pstree -g 3'
+    alias ls='ls -G'
+    alias ll='ls -lh'
 fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if svn is installed)

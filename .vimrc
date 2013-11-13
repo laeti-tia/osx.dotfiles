@@ -7,8 +7,8 @@ set background=dark
 "set modeline
 "set modelines=5
 
-" Default tab behavior
-set ts=4 sw=4 tw=0
+" Default tab-key behavior: insert 4 spaces
+set expandtab ts=4 sw=4
 
 " Change the <Leader> key
 "let mapleader = ","
