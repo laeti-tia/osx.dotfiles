@@ -39,7 +39,7 @@ prompt_git() {
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
     [[ -n "$(git status 2>/dev/null | grep -F 'working directory clean')" ]] || STATUS="❗ "
-	printf "(git:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
+        printf "(git:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
 }
 # SVN prompt
 prompt_svn() {
@@ -52,7 +52,7 @@ prompt_svn() {
     BRANCH=${BRANCH#branches/}
     BRANCH=${BRANCH%%/*}
     [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
-	printf "(svn:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
+        printf "(svn:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
 }
 # We look for GIT then SVN
 prompt_vcs() {
@@ -91,18 +91,18 @@ esac
 prompt_on() {
     PS1=$MY_PROMPT'\[\e[1;31m\]$(prompt_jobs)\[\e[0;32m\]$(prompt_vcs)\[\e[0m\]'
     if [[ $EUID -eq 0 ]]; then
-	PS1=$PS1'\[\e[1;31m\]#\[\e[0m\] '
+        PS1=$PS1'\[\e[1;31m\]#\[\e[0m\] '
     elif [[ -n $SUDO_USER ]]; then
-	PS1=$PS1'\[\e[1;33m\]±\[\e[0m\] '
+        PS1=$PS1'\[\e[1;33m\]±\[\e[0m\] '
     else
-	PS1=$PS1'\$ '
+        PS1=$PS1'\$ '
     fi
 }
 prompt_off() {
     if [[ $EUID -eq 0 ]]; then
-	PS1='# '
+        PS1='# '
     else
-	PS1='$ '
+        PS1='$ '
     fi
 }
 # We default to the full features prompt
@@ -111,8 +111,8 @@ prompt_on
 # Common ssh-agent for all terms
 if [ ! $?SSH_CLIENT ]; then
     if [ ! -e /tmp/ssh-agent-${USER} ]; then
-	ssh-agent -s > /tmp/ssh-agent-${USER}
-	chmod 600 /tmp/ssh-agent-${USER}
+        ssh-agent -s > /tmp/ssh-agent-${USER}
+        chmod 600 /tmp/ssh-agent-${USER}
     fi
     source /tmp/ssh-agent-${USER}
 fi
