@@ -135,8 +135,8 @@ fi
 
 # Alias definitions.
 alias grep='grep --color=auto'
-alias ls='ls -G --color=auto'
-alias ll='ls -lh --color=auto'
+alias ls='ls --color=auto'
+alias ll='ls -lh'
 alias df='df -h'
 alias rm='rm -i'
 alias cp='cp -i'
