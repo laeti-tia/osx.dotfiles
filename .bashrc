@@ -21,7 +21,7 @@ shopt -s checkwinsize
 ## Editor related
 # vi mode
 set -o vi
-export EDITOR=vi
+export EDITOR=vim
 
 ## Debian chroot, if any
 # set variable identifying the chroot you work in (used in the prompt below)
@@ -141,6 +141,7 @@ alias df='df -h'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+alias vi='vim'
 alias psa='ps aux'
 alias cwdcmd='echo -n "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 alias who='who -HTu'
