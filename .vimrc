@@ -1,18 +1,19 @@
+" Just to be safe, we don't want the compatible mode
+set nocompatible
+
+" We want syntax highlighting and for searches and better on dark background
 syntax on
-" Highlight searches
 set hlsearch
+set background=dark
+
 " Activate ruler (position within file at the bottom/right)
 set ruler
-set background=dark
 "set modeline
 "set modelines=5
 
 " Default tab-key behavior: insert 4 spaces
 " (then use :%retab to convert all tabs to spaces)
 set expandtab sw=4 smarttab
-
-" Change the <Leader> key
-"let mapleader = ","
 
 " Append modeline after last line in buffer.
 " Use substitute() instead of printf() to handle '%%s' modeline in LaTeX files.

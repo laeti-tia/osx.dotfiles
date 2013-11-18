@@ -67,13 +67,13 @@ prompt_jobs() {
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
 # We want a colored prompt, if the terminal has the capability
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
     # We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
     MY_PROMPT='\[\e[1;32m\]\u\[\e[31m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]'
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
 else
-    MY_PROMPT='\u@\h:\w\$'
+    MY_PROMPT='\u@\h:\w'
 fi
 
 # If this is an xterm set the titlebar to user@host:dir
@@ -117,9 +117,13 @@ if [ ! $?SSH_CLIENT ]; then
     source /tmp/ssh-agent-${USER}
 fi
 
-# Bash completion, if installed with braw on OSX (should be default on Debian)
-if [[ -f /usr/local/bin/brew && -f `brew --prefix`/etc/bash_completion ]]; then
+# Bash completion, if installed (should be default on Debian)
+if [ -f /usr/local/bin/brew ] && [ -f `brew --prefix`/etc/bash_completion ]; then
+    # on OSX with brew
     . `brew --prefix`/etc/bash_completion
+elif [ -f /usr/local/etc/bash_completion ]; then
+    # on FreeBSD if installed ("pkg install bash-completion")
+    . /usr/local/etc/bash_completion
 fi
 
 # Java related settings
@@ -129,11 +133,9 @@ export MAVEN_OPTS="-XX:MaxPermSize=256m"
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # enable color support for some commands
-if [ -x /usr/bin/dircolors ]; then
-    eval "`dircolors -b`"
-fi
+[ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
 
-# Alias definitions.
+# Alias definitions, linux defaults
 alias grep='grep --color=auto'
 alias ls='ls --color=auto'
 alias ll='ls -lh'
@@ -157,11 +159,14 @@ alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 
 # OSX only aliases
-if [ `uname` = "Darwin" ]; then
+if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
     alias top='/usr/bin/top -u -s 2 -S'
     alias pstree='/usr/local/bin/pstree -g 3'
     alias ls='ls -G'
     alias ll='ls -lh'
+    if [[ `uname` = FreeBSD ]]; then
+        alias top='top -z'
+    fi
 fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if svn is installed)
