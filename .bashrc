@@ -108,15 +108,6 @@ prompt_off() {
 # We default to the full features prompt
 prompt_on
 
-# Common ssh-agent for all terms
-if [ ! $?SSH_CLIENT ]; then
-    if [ ! -e /tmp/ssh-agent-${USER} ]; then
-        ssh-agent -s > /tmp/ssh-agent-${USER}
-        chmod 600 /tmp/ssh-agent-${USER}
-    fi
-    source /tmp/ssh-agent-${USER}
-fi
-
 # Bash completion, if installed (should be default on Debian)
 if [ -f /usr/local/bin/brew ] && [ -f `brew --prefix`/etc/bash_completion ]; then
     # on OSX with brew
