@@ -11,6 +11,7 @@
 	commitencoding = utf-8
 [github]
 	user = tonin
-	token = 1177a006cde4cbceab6186e35b414f15
 [push]
 	default = simple
+[core]
+	excludesfile = ~/.mygitignore
