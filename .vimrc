@@ -46,6 +46,7 @@ let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
 autocmd FileType gitcommit call setpos('.', [0, 1, 1, 0])
 
 " Adding a few filetypes
+au BufNewFile,BufRead *.ddl set filetype=sql
 au BufNewFile,BufRead Capfile set filetype=ruby
 
 " XML Folding

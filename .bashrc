@@ -156,7 +156,7 @@ if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
     alias ls='ls -G'
     alias ll='ls -lh'
     if [[ `uname` = FreeBSD ]]; then
-        alias top='top -z'
+        alias top='/usr/bin/top -a -z -s 2 -S'
     fi
 fi
 
