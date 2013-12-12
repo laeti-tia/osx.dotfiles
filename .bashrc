@@ -61,6 +61,14 @@ prompt_vcs() {
 prompt_jobs() {
     [ -n "$(jobs)" ] && printf '{%d}' $(jobs | sed -n '$=')
 }
+# Look at result code
+prompt_result() {
+    if [[ $? == 0 ]]; then
+        echo "$(tput ${AF} 15):)$(tput me)"
+    else
+        echo "$(tput ${AF} 9):($(tput me)"
+    fi
+}
 
 # TODO: add Debian chroot info, if any
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
@@ -74,7 +82,7 @@ fi
 # We want a colored prompt and utilities, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
     # We have color support; assume it's compliant with Ecma-48. We use "tput" so the char count stays right.
-    MY_PROMPT="\[$(tput ${AF} 10)\]\u\[$(tput ${AF} 9)\]@\[$(tput ${AF} 11)\]\h\[$(tput me)\]:\[$(tput ${AF} 12)\]\w\[$(tput me)\]"
+    MY_PROMPT="\[$(tput ${AF} 10)\]\u\[$(tput ${AF} 9)\]@\[$(tput ${AF} 11)\]\h\$(prompt_result)\[$(tput ${AF} 12)\]\w\[$(tput me)\]"
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
     alias ls='ls --color=auto'
@@ -170,4 +178,7 @@ fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if in svn repo)
 svn info &>/dev/null && source ~/.svn-color/svn-color.sh
+
+# get a successful return code no matter what
+return 0
 
