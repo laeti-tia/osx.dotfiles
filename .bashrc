@@ -3,33 +3,32 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+### Default environment                                                 ----------
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export MAVEN_OPTS="-XX:MaxPermSize=256m"
+# We use vi mode and vim as EDITOR
+set -o vi
+export EDITOR=vim
+# check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+export MANWIDTH="tty"
 
-## History
-# ignoredups and ignorespace
+### History                                                             ----------
+# ignoredups and ignorespace, append to the history file, don't overwrite it
 export HISTCONTROL=ignoreboth
 export HISTSIZE=999
 export HISTFILESIZE=9999
-# append to the history file, don't overwrite it
 shopt -s histappend
 # keep multi-seesion history fine
 PROMPT_COMMAND='history -a'
 
-# check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
-shopt -s checkwinsize
-
-## Editor related
-# vi mode
-set -o vi
-export EDITOR=vim
-
-## Debian chroot, if any
+### Debian chroot                                                       ---------- 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
-## Prompt
+## Prompt                                                               ----------
 # We use promptvars
 shopt -s promptvars
 # Git prompt
@@ -60,18 +59,36 @@ prompt_vcs() {
 }
 # Add number of background jobs, if any
 prompt_jobs() {
-    [[ -n "$(jobs)" ]] && printf '{%d}' $(jobs | sed -n '$=')
+    [ -n "$(jobs)" ] && printf '{%d}' $(jobs | sed -n '$=')
 }
 
 # TODO: add Debian chroot info, if any
 #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 
-# We want a colored prompt, if the terminal has the capability
+if [ `uname` == FreeBSD ]; then
+    # FreeBSD tput doesn't recognize the terminfo capname but only the old termcap code
+    AF="AF"
+else
+    AF="setaf"
+fi
+# We want a colored prompt and utilities, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48 (ISO/IEC-6429).
-    MY_PROMPT='\[\e[1;32m\]\u\[\e[31m\]@\[\e[33m\]\h\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]'
+    # We have color support; assume it's compliant with Ecma-48. We use "tput" so the char count stays right.
+    MY_PROMPT="\[$(tput ${AF} 10)\]\u\[$(tput ${AF} 9)\]@\[$(tput ${AF} 11)\]\h\[$(tput me)\]:\[$(tput ${AF} 12)\]\w\[$(tput me)\]"
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
+    alias ls='ls --color=auto'
+    export PAGER="less -sR"
+    [ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
+    export LESS="--RAW-CONTROL-CHARS"
+    export LESS_TERMCAP_mb=$'\e[38;5;009m'
+    export LESS_TERMCAP_md=$'\e[38;5;010m'
+    export LESS_TERMCAP_me=$'\e[0m'
+    export LESS_TERMCAP_se=$'\e[0m'
+    export LESS_TERMCAP_so=$'\e[48;5;004m'
+    export LESS_TERMCAP_ue=$'\e[0m'
+    export LESS_TERMCAP_us=$'\e[38;5;012m'
+    export GREP_OPTIONS="--color=auto" GREP_COLOR='38;5;208'
 else
     MY_PROMPT='\u@\h:\w'
 fi
@@ -89,11 +106,11 @@ esac
 
 # Switch the prompt on or off
 prompt_on() {
-    PS1=$MY_PROMPT'\[\e[1;31m\]$(prompt_jobs)\[\e[0;32m\]$(prompt_vcs)\[\e[0m\]'
+    PS1=$MY_PROMPT"\[$(tput ${AF} 9)\]\$(prompt_jobs)\[$(tput ${AF} 2)\]\$(prompt_vcs)\[$(tput me)\]"
     if [[ $EUID -eq 0 ]]; then
-        PS1=$PS1'\[\e[1;31m\]#\[\e[0m\] '
+        PS1=$PS1"\[$(tput ${AF} 9)\]#\[$(tput me)\] "
     elif [[ -n $SUDO_USER ]]; then
-        PS1=$PS1'\[\e[1;33m\]±\[\e[0m\] '
+        PS1=$PS1"\[$(tput ${AF} 11)\]±\[$(tput me)\] "
     else
         PS1=$PS1'\$ '
     fi
@@ -106,29 +123,13 @@ prompt_off() {
     fi
 }
 # We default to the full features prompt
-prompt_on
-
-# Bash completion, if installed (should be default on Debian)
-if [ -f /usr/local/bin/brew ] && [ -f `brew --prefix`/etc/bash_completion ]; then
-    # on OSX with brew
-    . `brew --prefix`/etc/bash_completion
-elif [ -f /usr/local/etc/bash_completion ]; then
-    # on FreeBSD if installed ("pkg install bash-completion")
-    . /usr/local/etc/bash_completion
-fi
-
-# Java related settings
-export MAVEN_OPTS="-XX:MaxPermSize=256m"
+[ -x /usr/bin/tput ] && prompt_on
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# enable color support for some commands
-[ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
-
-# Alias definitions, linux defaults
-alias grep='grep --color=auto'
-alias ls='ls --color=auto'
+### Alias definitions                                                           ----------
+# Linux defaults
 alias ll='ls -lh'
 alias df='df -h'
 alias rm='rm -i'
@@ -136,7 +137,6 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias vi='vim'
 alias psa='ps aux'
-alias cwdcmd='echo -n "\033]0;${USER}@${HOSTNAME}: ${PWD}\007"'
 alias who='who -HTu'
 alias diffpatch='diff -Naur'
 alias idiff='~/.idiff.sh'
@@ -149,17 +149,25 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 
-# OSX only aliases
+# FreeBSD and OSX only
 if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
+    # Bash completion, if installed (should be default on Debian)
+    if [ -f /usr/local/bin/brew ] && [ -f `brew --prefix`/etc/bash_completion ]; then
+        # on OSX with brew
+        . `brew --prefix`/etc/bash_completion
+    elif [ -f /usr/local/etc/bash_completion ]; then
+        # on FreeBSD if installed ("pkg install bash-completion")
+        . /usr/local/etc/bash_completion
+    fi
     alias top='/usr/bin/top -u -s 2 -S'
     alias pstree='/usr/local/bin/pstree -g 3'
     alias ls='ls -G'
     alias ll='ls -lh'
-    if [[ `uname` = FreeBSD ]]; then
+    if [ `uname` == FreeBSD ]; then
         alias top='/usr/bin/top -a -z -s 2 -S'
     fi
 fi
 
-# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if svn is installed)
+# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if in svn repo)
 svn info &>/dev/null && source ~/.svn-color/svn-color.sh
 

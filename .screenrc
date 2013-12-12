@@ -1,3 +1,15 @@
 # Make xterm scrolling work properly with screen.
 termcapinfo xterm*|xs|rxvt ti@:te@
 defscrollback 10000
+# No startup screen
+startup_message off
+# And no visual bell
+vbell off
+# The following 3 are needed under FreeBSD
+# Correcting bold mode
+termcapinfo xterm*|screen* ':md=\E[1m'
+# Correcting blinking mode
+termcapinfo xterm*|screen* ':mb=\E[5m'
+# Correcting half-bright mode
+termcapinfo xterm*|screen* ':mh=\E[2m'
+

@@ -1,17 +1,21 @@
 [gui]
-	encoding = utf-8
+    encoding = utf-8
 [user]
-	name = Antoine
-	email = antoine@eshango.com
+    name = Antoine
+    email = antoine@eshango.com
 [color]
-	ui = auto
+    ui = auto
 [merge]
-	tool = vimdiff
+    tool = vimdiff
 [i18n]
-	commitencoding = utf-8
+    commitencoding = utf-8
 [github]
-	user = tonin
+    user = tonin
 [push]
-	default = simple
+    #default = simple            # Only work with git > 1.8
 [core]
-	excludesfile = ~/.mygitignore
+    excludesfile = ~/.mygitignore
+[alias]
+    clog = log --pretty=format:"%C(reset)%h%x09%Cgreen%an%x09%Cblue%ad%C(reset)%+d%x09%Creset%s" --date=short --graph --decorate --all
+    # Only work with git > 1.8
+    #clog = log --pretty=format:"%C(auto)%h%x09%Cgreen%<(15,trunc)%an%x09%Cblue%ad%C(auto)%+d%x09%Creset%<(90,trunc)%s" --date=short --graph --decorate --all
