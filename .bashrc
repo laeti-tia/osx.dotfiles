@@ -157,7 +157,6 @@ alias vi='vim'
 alias psa='ps aux'
 alias who='who -HTu'
 alias diffpatch='diff -Naur'
-alias idiff='~/.idiff.sh'
 alias less='less -r'
 alias pstree='pstree -Ga'
 alias info='info --vi-keys'
@@ -186,8 +185,9 @@ if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
     fi
 fi
 
-# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color (only if in svn repo)
-svn info &>/dev/null && source ~/.svn-color/svn-color.sh
+# svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
+# used only if cwd is a svn repo
+svn info &>/dev/null && source ~/.subversion/svn-color.sh
 
 # get a successful return code no matter what
 return 0

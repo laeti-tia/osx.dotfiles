@@ -25,7 +25,6 @@ Credits
 -------
 
 - The bash svn-color function sourced in `.bashrc` is coming from [Jean-Michel Lacroix][2].
-- The bash `idiff.sh` script is coming from [pixelbeat.org][4]
 - The VIM fugitive git wrapper and the pathogen autoloader are from [Tim Pope][3].
 
 
@@ -46,4 +45,3 @@ are permitted provided that the following conditions are met:
 [1]: http://kylefuller.co.uk/posts/organising-dotfiles-in-a-git-repository/ "Organising dotfiles in a git repository"
 [2]: https://github.com/jmlacroix/svn-color
 [3]: http://github.com/tpope/vim-fugitive
-[4]: http://www.pixelbeat.org/scripts/idiff
