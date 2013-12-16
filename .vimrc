@@ -5,6 +5,7 @@ set nocompatible
 syntax on
 set hlsearch
 set background=dark
+colorscheme sahara
 
 " Activate ruler (position within file at the bottom/right)
 set ruler
