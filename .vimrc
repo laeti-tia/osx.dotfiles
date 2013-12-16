@@ -1,6 +1,9 @@
 " Just to be safe, we don't want the compatible mode
 set nocompatible
 
+" Load pathogen.vim and all other installed bundles
+execute pathogen#infect()
+
 " We want syntax highlighting and for searches and better on dark background
 syntax on
 set hlsearch
@@ -36,9 +39,6 @@ endif
 
 " Load Justify macro (to be called with ":J")
 runtime macros/justify.vim
-
-" Load pathogen.vim and all other installed bundles
-call pathogen#infect()
 
 " Use a better ctags binary
 let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"

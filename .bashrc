@@ -83,7 +83,7 @@ else
 fi
 if [ `uname` == Darwin ]; then
     SMILEY="$(tput ${AF} 15):)"
-    FROWNY="$(tput ${AF} 09):("
+    FROWNY="$(tput ${AF} 9):("
 else
     SMILEY="\e[38;5;015m:)"
     FROWNY="\e[38;5;009m:("
