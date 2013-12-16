@@ -64,9 +64,9 @@ prompt_jobs() {
 # Look at result code
 prompt_result() {
     if [[ $? == 0 ]]; then
-        echo -e ${SMILEY}
+        printf ${SMILEY}
     else
-        echo -e ${FROWNY}
+        printf ${FROWNY}
     fi
 }
 
@@ -82,16 +82,16 @@ else
     AF="setaf"
 fi
 if [ `uname` == Darwin ]; then
-    SMILEY="$(tput ${AF} 15):)$(tput ${ME})"
-    FROWNY="$(tput ${AF} 9):($(tput ${ME})"
+    SMILEY="$(tput ${AF} 15):)"
+    FROWNY="$(tput ${AF} 09):("
 else
-    SMILEY="\e[38;5;015m:)$(tput ${ME})"
-    FROWNY="\e[38;5;009m:($(tput ${ME})"
+    SMILEY="\e[38;5;015m:)"
+    FROWNY="\e[38;5;009m:("
 fi
 # We want a colored prompt and utilities, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
     # We have color support; assume it's compliant with Ecma-48.
-    MY_PROMPT="\[\e[38;5;010m\]\u\[\e[38;5;009m\]@\[\e[38;5;011m\]\h\$(prompt_result)\[\e[38;5;012m\]\w\[$(tput ${ME})\]"
+    MY_PROMPT="\[\e[38;5;010m\]\u\[\e[38;5;009m\]@\[\e[38;5;011m\]\h\[\$(prompt_result)\]\[\e[38;5;012m\]\w\[$(tput ${ME})\]"
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
     alias ls='ls --color=auto'
