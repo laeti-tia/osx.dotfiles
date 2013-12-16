@@ -3,4 +3,7 @@
 	url = https://github.com/tpope/vim-fugitive.git
 [submodule ".svn-color"]
 	path = .svn-color
-	url = https://github.com/jmlacroix/svn-color.git
+	url = git@github.com:tonin/svn-color.git
+[submodule "svn-color"]
+	path = svn-color
+	url = git@github.com:tonin/svn-color.git
