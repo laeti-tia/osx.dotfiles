@@ -64,9 +64,9 @@ prompt_jobs() {
 # Look at result code
 prompt_result() {
     if [[ $? == 0 ]]; then
-        echo "$(tput ${AF} 15):)$(tput me)"
+        echo -e ${SMILEY}
     else
-        echo "$(tput ${AF} 9):($(tput me)"
+        echo -e ${FROWNY}
     fi
 }
 
@@ -75,14 +75,23 @@ prompt_result() {
 
 if [ `uname` == FreeBSD ]; then
     # FreeBSD tput doesn't recognize the terminfo capname but only the old termcap code
+    ME="me"
     AF="AF"
 else
+    ME="sgr0"
     AF="setaf"
+fi
+if [ `uname` == Darwin ]; then
+    SMILEY="$(tput ${AF} 15):)$(tput ${ME})"
+    FROWNY="$(tput ${AF} 9):($(tput ${ME})"
+else
+    SMILEY="\e[38;5;015m:)$(tput ${ME})"
+    FROWNY="\e[38;5;009m:($(tput ${ME})"
 fi
 # We want a colored prompt and utilities, if the terminal has the capability
 if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48. We use "tput" so the char count stays right.
-    MY_PROMPT="\[$(tput ${AF} 10)\]\u\[$(tput ${AF} 9)\]@\[$(tput ${AF} 11)\]\h\$(prompt_result)\[$(tput ${AF} 12)\]\w\[$(tput me)\]"
+    # We have color support; assume it's compliant with Ecma-48.
+    MY_PROMPT="\[\e[38;5;010m\]\u\[\e[38;5;009m\]@\[\e[38;5;011m\]\h\$(prompt_result)\[\e[38;5;012m\]\w\[$(tput ${ME})\]"
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
     alias ls='ls --color=auto'
@@ -97,6 +106,7 @@ if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
     export LESS_TERMCAP_ue=$'\e[0m'
     export LESS_TERMCAP_us=$'\e[38;5;012m'
     export GREP_OPTIONS="--color=auto" GREP_COLOR='38;5;208'
+    export TERM="xterm-256color"
 else
     MY_PROMPT='\u@\h:\w'
 fi
@@ -114,11 +124,11 @@ esac
 
 # Switch the prompt on or off
 prompt_on() {
-    PS1=$MY_PROMPT"\[$(tput ${AF} 9)\]\$(prompt_jobs)\[$(tput ${AF} 2)\]\$(prompt_vcs)\[$(tput me)\]"
+    PS1=$MY_PROMPT"\[\e[38;5;009m\]\$(prompt_jobs)\[\e[38;5;002m\]\$(prompt_vcs)\[$(tput ${ME})\]"
     if [[ $EUID -eq 0 ]]; then
-        PS1=$PS1"\[$(tput ${AF} 9)\]#\[$(tput me)\] "
+        PS1=$PS1"\[\e[38;5;009m\]#\[$(tput ${ME})\] "
     elif [[ -n $SUDO_USER ]]; then
-        PS1=$PS1"\[$(tput ${AF} 11)\]±\[$(tput me)\] "
+        PS1=$PS1"\[\e[38;5;011m\]±\[$(tput ${ME})\] "
     else
         PS1=$PS1'\$ '
     fi

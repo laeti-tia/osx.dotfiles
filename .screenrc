@@ -5,6 +5,7 @@ defscrollback 10000
 startup_message off
 # And no visual bell
 vbell off
+
 # The following 3 are needed under FreeBSD
 # Correcting bold mode
 termcapinfo xterm*|screen* ':md=\E[1m'
@@ -13,3 +14,8 @@ termcapinfo xterm*|screen* ':mb=\E[5m'
 # Correcting half-bright mode
 termcapinfo xterm*|screen* ':mh=\E[2m'
 
+# Status line
+hardstatus alwayslastline
+hardstatus string '%{= kg}[ %{Y}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{b} %d-%m %{W} %c %{g}]'
+
+shell -$SHELL
