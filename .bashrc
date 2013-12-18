@@ -109,7 +109,11 @@ if [[ ${SHLVL-0} -ne 1 ]]; then
 fi
 
 # @
-MY_PROMPT="${MY_PROMPT}"'\[$P_INFO\]'"@"'\[$P_RESET\]'
+if [[ $EUID -eq 0 ]]; then
+    MY_PROMPT="${MY_PROMPT}"'\[$P_OK\]'"@"'\[$P_RESET\]'
+else
+    MY_PROMPT="${MY_PROMPT}"'\[$P_ERROR\]'"@"'\[$P_RESET\]'
+fi
 
 # SSH session
 if [[ -n "${SSH_CONNECTION:-}" ]]; then
