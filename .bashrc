@@ -72,7 +72,7 @@ P_BOLD="${P_BOLD-$(color_enabled && tput ${MD})}"
 P_HOME="${P_HOME-$(color_enabled && tput ${AF} 11)}"
 P_OK="${P_OK-$(color_enabled && tput ${AF} 10)}"
 P_ERROR="${P_ERROR-$(color_enabled && tput ${AF} 9)}"
-P_WARNING="${P_WARNING-$(color_enabled && tput ${AF} 208)}"
+P_WARNING="${P_WARNING-$(color_enabled && tput ${AF} 214)}"
 P_NORMAL="${P_NORMAL-$(color_enabled && tput ${AF} 15)}"
 P_INFO="${P_INFO-$(color_enabled && tput ${AF} 12)}"
 P_RESET="${P_RESET-$(color_enabled && tput ${ME})}"
@@ -95,8 +95,8 @@ MY_PROMPT=""
 MY_PATH=""
 
 # UID
-if [[ "$USER" = 'root' ]]; then
-    MY_PROMPT="$MY_PROMPT"'\[$P_BOLD\]\[$P_OK\]\u'
+if [[ $EUID -eq 0 ]]; then
+    MY_PROMPT="$MY_PROMPT"'\[$P_ERROR\]\u'
 elif [[ -n "${SUDO_USER:-}" ]]; then
     MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]\u'
 else
@@ -109,7 +109,7 @@ if [[ ${SHLVL-0} -ne 1 ]]; then
 fi
 
 # @
-MY_PROMPT="${MY_PROMPT}"'\[$P_ERROR\]'"@"'\[$P_RESET\]'
+MY_PROMPT="${MY_PROMPT}"'\[$P_INFO\]'"@"'\[$P_RESET\]'
 
 # SSH session
 if [[ -n "${SSH_CONNECTION:-}" ]]; then
@@ -149,28 +149,11 @@ prompt_jobs() {
 }
 MY_PATH="$MY_PATH"'\[$P_WARNING\]'"\$(prompt_jobs)"'\[$P_RESET\]'
 
-# Git branch
-#if ! type -t __git_ps1 &> /dev/null && [ -e /usr/share/git/completion/git-prompt.sh ]
-#then
-#    source /usr/share/git/completion/git-prompt.sh
-#fi
-#if type -t __git_ps1 &>/dev/null
-#then
-#    PS1="$PS1"'$(__git_ps1 " (%s)")'
-#    export GIT_PS1_SHOWDIRTYSTATE=1
-#    export GIT_PS1_SHOWSTASHSTATE=1
-#    export GIT_PS1_SHOWUPSTREAM="auto"
-#fi
-
-# Versioning Control Systems
-MAX_CONFLICTED_FILES=5
-DELTA_CHAR="△"
-CONFLICT_CHAR="☢"
-BISECTING_TEXT="bisecting"
-NOBRANCH_TEXT="no branch!"
-REBASE_TEXT="✂ ʀebase"
-SUBMODULE_TEXT="[submodule] "
-
+### Versionning Control Systems                                                 ----------
+# We look for GIT then SVN -- called at runtime
+prompt_vcs() {
+    prompt_git || prompt_svn;
+}
 # Git prompt
 prompt_git() {
     # Are we in a git repository?
@@ -196,10 +179,6 @@ prompt_svn() {
     REVNO="$(svnversion --no-newline)"
     [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
     printf "(svn:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "${STATUS}" "${REVNO}"
-}
-# We look for GIT then SVN
-prompt_vcs() {
-    prompt_git || prompt_svn;
 }
 
 # make less more friendly for non-text input files, see lesspipe(1)
