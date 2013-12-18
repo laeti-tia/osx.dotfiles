@@ -1,7 +1,7 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+[[ $- != *i* ]] && return
 
 ### Default environment                                                 ----------
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
@@ -26,72 +26,20 @@ PROMPT_COMMAND='history -a'
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
+    chroot=debian_chroot
 fi
 
 ## Prompt                                                               ----------
 # We use promptvars
 shopt -s promptvars
-# Git prompt
-prompt_git() {
-    # Are we in a git repository?
-    git branch &>/dev/null || return 1
-    HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
-    BRANCH="${HEAD##*/}"
-    [[ -n "$(git status 2>/dev/null | grep -F 'working directory clean')" ]] || STATUS="❗ "
-        printf "(git:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
-}
-# SVN prompt
-prompt_svn() {
-    # Are we in a svn repository?
-    svn info &>/dev/null || return 1
-    URL="$(svn info 2>/dev/null | awk -F': ' '$1 == "URL" {print $2}')"
-    ROOT="$(svn info 2>/dev/null | awk -F': ' '$1 == "Repository Root" {print $2}')"
-    BRANCH=${URL/$ROOT}
-    BRANCH=${BRANCH#/}
-    BRANCH=${BRANCH#branches/}
-    BRANCH=${BRANCH%%/*}
-    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
-        printf "(svn:%s%s)" "${BRANCH:-unknown}" "${STATUS}"
-}
-# We look for GIT then SVN
-prompt_vcs() {
-    prompt_git || prompt_svn;
-}
-# Add number of background jobs, if any
-prompt_jobs() {
-    [ -n "$(jobs)" ] && printf '{%d}' $(jobs | sed -n '$=')
-}
-# Look at result code
-prompt_result() {
-    if [[ $? == 0 ]]; then
-        printf ${SMILEY}
-    else
-        printf ${FROWNY}
-    fi
+
+# Colorful or not?
+color_enabled() {
+    local -i colors=$(tput colors 2>/dev/null)
+    [[ $? -eq 0 ]] && [[ $colors -gt 2 ]]
 }
 
-# TODO: add Debian chroot info, if any
-#PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-
-if [ `uname` == FreeBSD ]; then
-    # FreeBSD tput doesn't recognize the terminfo capname but only the old termcap code
-    ME="me"
-    AF="AF"
-else
-    ME="sgr0"
-    AF="setaf"
-fi
-if [ `uname` == Darwin ]; then
-    SMILEY="$(tput ${AF} 15):)"
-    FROWNY="$(tput ${AF} 9):("
-else
-    SMILEY="\e[38;5;015m:)"
-    FROWNY="\e[38;5;009m:("
-fi
-# We want a colored prompt and utilities, if the terminal has the capability
-if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48.
-    MY_PROMPT="\[\e[38;5;010m\]\u\[\e[38;5;009m\]@\[\e[38;5;011m\]\h\[\$(prompt_result)\]\[\e[38;5;012m\]\w\[$(tput ${ME})\]"
+if [ color_enabled ]; then
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
     alias ls='ls --color=auto'
@@ -107,41 +55,152 @@ if [ -x /usr/bin/tput ] && tput colors >&/dev/null; then
     export LESS_TERMCAP_us=$'\e[38;5;012m'
     export GREP_OPTIONS="--color=auto" GREP_COLOR='38;5;208'
     export TERM="xterm-256color"
-else
-    MY_PROMPT='\u@\h:\w'
 fi
 
-# If this is an xterm set the titlebar to user@host:dir
-case "$TERM" in
-screen*|xterm*|rxvt*)
-    MY_PROMPT="\[\e]0;\u@\h: \w\a\]$MY_PROMPT"
-# TODO: Debian chroot
-#    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+# Some useful prompt formats
+if [ `uname` == FreeBSD ]; then
+    # FreeBSD tput doesn't recognize the terminfo capname but only the old termcap code
+    ME="me"
+    AF="AF"
+    MD="md"
+else
+    ME="sgr0"
+    AF="setaf"
+    MD="bold"
+fi
+P_BOLD="${P_BOLD-$(color_enabled && tput ${MD})}"
+P_HOME="${P_HOME-$(color_enabled && tput ${AF} 11)}"
+P_OK="${P_OK-$(color_enabled && tput ${AF} 10)}"
+P_ERROR="${P_ERROR-$(color_enabled && tput ${AF} 9)}"
+P_WARNING="${P_WARNING-$(color_enabled && tput ${AF} 208)}"
+P_NORMAL="${P_NORMAL-$(color_enabled && tput ${AF} 15)}"
+P_INFO="${P_INFO-$(color_enabled && tput ${AF} 12)}"
+P_RESET="${P_RESET-$(color_enabled && tput ${ME})}"
 
-# Switch the prompt on or off
-prompt_on() {
-    PS1=$MY_PROMPT"\[\e[38;5;009m\]\$(prompt_jobs)\[\e[38;5;002m\]\$(prompt_vcs)\[$(tput ${ME})\]"
-    if [[ $EUID -eq 0 ]]; then
-        PS1=$PS1"\[\e[38;5;009m\]#\[$(tput ${ME})\] "
-    elif [[ -n $SUDO_USER ]]; then
-        PS1=$PS1"\[\e[38;5;011m\]±\[$(tput ${ME})\] "
+# Exit code
+p_result(){
+    if [[ $? == 0 ]]; then
+        printf "\[$P_NORMAL\]:)\[$P_RESET\]"
     else
-        PS1=$PS1'\$ '
+        printf "\[$P_ERROR\]:(\[$P_RESET\]"
     fi
 }
-prompt_off() {
-    if [[ $EUID -eq 0 ]]; then
-        PS1='# '
-    else
-        PS1='$ '
-    fi
+
+# PS1 needs to be re-evaluated after each command, because we use colors in the functions
+set_bash_prompt(){
+    PS1="${MY_PROMPT}$(p_result)${MY_PATH}$(prompt_vcs)\\$ "
 }
-# We default to the full features prompt
-[ -x /usr/bin/tput ] && prompt_on
+PROMPT_COMMAND="set_bash_prompt; ${PROMPT_COMMAND}"
+MY_PROMPT=""
+MY_PATH=""
+
+# UID
+if [[ "$USER" = 'root' ]]; then
+    MY_PROMPT="$MY_PROMPT"'\[$P_BOLD\]\[$P_OK\]\u'
+elif [[ -n "${SUDO_USER:-}" ]]; then
+    MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]\u'
+else
+    MY_PROMPT="$MY_PROMPT"'\[$P_OK\]\u'
+fi
+
+# Shell level
+if [[ ${SHLVL-0} -ne 1 ]]; then
+    MY_PROMPT="$MY_PROMPT^$SHLVL"'\[$P_RESET\]'
+fi
+
+# @
+MY_PROMPT="${MY_PROMPT}"'\[$P_ERROR\]'"@"'\[$P_RESET\]'
+
+# SSH session
+if [[ -n "${SSH_CONNECTION:-}" ]]; then
+    MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]\h\[$P_RESET\]'
+else
+    MY_PROMPT="$MY_PROMPT"'\[$P_HOME\]\h\[$P_RESET\]'
+fi
+
+# Chroot jail path
+if [[ -n "$chroot" ]]; then
+    MY_PATH="$MY_PATH"'\[$P_WARNING\]'"$chroot"'\[$P_RESET\]'
+fi
+
+# Working directory, absolute path if we're in a chroot jail
+MY_PATH="$MY_PATH"'\[$P_INFO\]'
+if [[ -z "$chroot" ]]; then
+    MY_PATH="$MY_PATH"'\w'
+else
+    MY_PATH="$MY_PATH"'$PWD'
+fi
+MY_PATH="$MY_PATH"'\[$P_RESET\]'
+
+# Title bar
+case "$TERM" in
+    xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
+        MY_PATH="$MY_PATH"'\[\033]0;\u@\h:'"${chroot}"'${PWD}\007\]'
+        ;;
+    screen)
+        MY_PATH="$MY_PATH"'\[\033_\u@\h:'"${chroot}"'${PWD}\033\\\'
+        ;;
+esac
+unset chroot
+
+# Running jobs, if any
+prompt_jobs() {
+    [ -n "$(jobs)" ] && printf '{%d}' $(jobs | sed -n '$=')
+}
+MY_PATH="$MY_PATH"'\[$P_WARNING\]'"\$(prompt_jobs)"'\[$P_RESET\]'
+
+# Git branch
+#if ! type -t __git_ps1 &> /dev/null && [ -e /usr/share/git/completion/git-prompt.sh ]
+#then
+#    source /usr/share/git/completion/git-prompt.sh
+#fi
+#if type -t __git_ps1 &>/dev/null
+#then
+#    PS1="$PS1"'$(__git_ps1 " (%s)")'
+#    export GIT_PS1_SHOWDIRTYSTATE=1
+#    export GIT_PS1_SHOWSTASHSTATE=1
+#    export GIT_PS1_SHOWUPSTREAM="auto"
+#fi
+
+# Versioning Control Systems
+MAX_CONFLICTED_FILES=5
+DELTA_CHAR="△"
+CONFLICT_CHAR="☢"
+BISECTING_TEXT="bisecting"
+NOBRANCH_TEXT="no branch!"
+REBASE_TEXT="✂ ʀebase"
+SUBMODULE_TEXT="[submodule] "
+
+# Git prompt
+prompt_git() {
+    # Are we in a git repository?
+    git branch &>/dev/null || return 1
+    HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
+    BRANCH="${HEAD##*/}"
+    GITSTATUS="$(git status 2>/dev/null)"
+    [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
+    # How many local commits do we have ahead of origin?
+    NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$13;}') || ""
+    printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "${STATUS}" "${NUM}"
+}
+# SVN prompt
+prompt_svn() {
+    # Are we in a svn repository?
+    svn info &>/dev/null || return 1
+    URL="$(svn info 2>/dev/null | awk -F': ' '$1 == "URL" {print $2}')"
+    ROOT="$(svn info 2>/dev/null | awk -F': ' '$1 == "Repository Root" {print $2}')"
+    BRANCH=${URL/$ROOT}
+    BRANCH=${BRANCH#/}
+    BRANCH=${BRANCH#branches/}
+    BRANCH=${BRANCH%%/*}
+    REVNO="$(svnversion --no-newline)"
+    [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
+    printf "(svn:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "${STATUS}" "${REVNO}"
+}
+# We look for GIT then SVN
+prompt_vcs() {
+    prompt_git || prompt_svn;
+}
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
