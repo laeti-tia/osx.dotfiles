@@ -78,7 +78,8 @@ P_INFO="${P_INFO-$(color_enabled && tput ${AF} 12)}"
 P_RESET="${P_RESET-$(color_enabled && tput ${ME})}"
 
 # Exit code
-p_result(){
+# TODO: it would be nice to print the return code at the end of the line (far right end)
+p_result() {
     if [[ $? == 0 ]]; then
         printf "\[$P_NORMAL\]:)\[$P_RESET\]"
     else
@@ -87,7 +88,7 @@ p_result(){
 }
 
 # PS1 needs to be re-evaluated after each command, because we use colors in the functions
-set_bash_prompt(){
+set_bash_prompt() {
     PS1="${MY_PROMPT}$(p_result)${MY_PATH}$(prompt_vcs)\\$ "
 }
 PROMPT_COMMAND="set_bash_prompt; ${PROMPT_COMMAND}"
