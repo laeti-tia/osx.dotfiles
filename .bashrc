@@ -169,7 +169,7 @@ prompt_git() {
     [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$13;}') || ""
-    printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "${STATUS}" "${NUM}"
+    printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${NUM}"
 }
 # SVN prompt
 prompt_svn() {
@@ -183,7 +183,7 @@ prompt_svn() {
     BRANCH=${BRANCH%%/*}
     REVNO="$(svnversion --no-newline)"
     [[ -n "$(svn status 2>/dev/null)" ]] && STATUS="❗ "
-    printf "(svn:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "${STATUS}" "${REVNO}"
+    printf "(svn:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${REVNO}"
 }
 
 # make less more friendly for non-text input files, see lesspipe(1)
