@@ -229,8 +229,7 @@ if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
 fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
-# used only if cwd is a svn repo
-svn info &>/dev/null && source ~/.subversion/svn-color.sh
+source ~/.subversion/svn-color.sh
 
 # get a successful return code no matter what
 return 0

@@ -1,7 +1,10 @@
 #!/bin/bash
+# Coming from JM Lacroix "svn-color" https://github.com/jmlacroix/svn-color
 
-function svn
-{
+# Keep svn full path to call
+fullsvnpath=$(which svn)
+
+function svn {
 	# rebuild args to get quotes right
 	CMD=
 	for i in "$@"
@@ -26,7 +29,7 @@ function svn
 	NOCOL=$?
 	if [ "$SVN_COLOR" != "always" ] && ( [ $NOCOL = 1 ] || [ "$SVN_COLOR" = "never" ] || [ ! -t 1 ] )
 	then
-		eval $(which svn) $CMD
+		eval "$fullsvnpath $CMD"
 		return
 	fi
 
@@ -35,9 +38,9 @@ function svn
 	ACTIONS="$ACTIONS|merge|mkdir|move|mv|ren|sw|up"
 
 	# actions that outputs "status-like" data
-	if [[ "$1" =~ ^($ACTIONS) ]]
+	if [[ "$1" =~ ^($ACTIONS) ]] && [ "$1" != "commit" ]
 	then
-		eval $(which svn) $CMD | while IFS= read -r RL
+		eval "$fullsvnpath $CMD" | while IFS= read -r RL
 		do
 			if   [[ $RL =~ ^\ ?M ]]; then C="\033[34m";
 			elif [[ $RL =~ ^\ ?C ]]; then C="\033[41m\033[38;5;15m";
@@ -56,7 +59,7 @@ function svn
 	# actions that outputs "diff-like" data
 	elif [[ "$1" =~ ^diff ]]
 	then
-		eval $(which svn) $CMD | while IFS= read -r RL
+		eval "$fullsvnpath $CMD" | while IFS= read -r RL
 		do
 			if   [[ $RL =~ ^Index:\  ]]; then C="\033[38;5;12m";
 			elif [[ $RL =~ ^@@ ]]; then C="\033[38;5;14m";
@@ -79,6 +82,6 @@ function svn
 			echo -e "$C${RL/\\/\\\\}\033[0m\033[0;0m"
 		done
 	else
-		eval $(which svn) $CMD
+		eval "$fullsvnpath $CMD"
 	fi
 }
