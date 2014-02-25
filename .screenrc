@@ -16,7 +16,7 @@ termcapinfo xterm*|screen* ':mh=\E[2m'
 
 # Status line
 hardstatus alwayslastline
-hardstatus string '%{= kg}[ %{Y}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{b} %d-%m %{W} %c %{g}]'
+hardstatus string '%{= kg}[ %{Y}%H %{g}- %{W}%l%{-} ][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{b} %d-%m %{W} %c %{g}]'
 
 term screen-256color
 shell -$SHELL
