@@ -168,7 +168,7 @@ prompt_git() {
     GITSTATUS="$(git status 2>/dev/null)"
     [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
     # How many local commits do we have ahead of origin?
-    NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$13;}') || ""
+    NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
     printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${NUM}"
 }
 # SVN prompt
@@ -200,7 +200,7 @@ alias vi='vim'
 alias psa='ps aux'
 alias who='who -HTu'
 alias diffpatch='diff -Naur'
-alias less='less -r'
+alias less='less -R'
 alias pstree='pstree -Ga'
 alias info='info --vi-keys'
 alias git-last-log='git log --summary HEAD^..'
