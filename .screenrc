@@ -5,6 +5,8 @@ defscrollback 10000
 startup_message off
 # And no visual bell
 vbell off
+# Use alternate screen to display man pages, less output, etc.
+altscreen on
 
 # The following 3 are needed under FreeBSD
 # Correcting bold mode
