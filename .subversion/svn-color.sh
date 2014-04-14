@@ -1,6 +1,9 @@
 #!/bin/bash
 # Coming from JM Lacroix "svn-color" https://github.com/jmlacroix/svn-color
 
+# Check if svn is available
+svn status &>/dev/null || return 1
+
 # Keep svn full path to call
 fullsvnpath=$(which svn)
 
