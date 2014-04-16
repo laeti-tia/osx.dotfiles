@@ -43,7 +43,7 @@ if [ color_enabled ]; then
     export CLICOLOR=1
     export LSCOLORS=ExGxFxDxCxDaDaabagecec
     alias ls='ls --color=auto'
-    export PAGER="less -sR"
+    export PAGER="less -sRM"
     [ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
     export LESS="--RAW-CONTROL-CHARS"
     export LESS_TERMCAP_mb=$'\e[38;5;009m'
@@ -188,6 +188,7 @@ prompt_svn() {
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+[ -x /usr/local/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe.sh)"        # OSX Brew variant
 
 ### Alias definitions                                                           ----------
 # Linux defaults
@@ -200,7 +201,7 @@ alias vi='vim'
 alias psa='ps aux'
 alias who='who -HTu'
 alias diffpatch='diff -Naur'
-alias less='less -R'
+alias less='less -RM'
 alias pstree='pstree -Ga'
 alias info='info --vi-keys'
 alias git-last-log='git log --summary HEAD^..'
