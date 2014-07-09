@@ -53,3 +53,7 @@ au BufNewFile,BufRead Capfile set filetype=ruby
 " XML Folding
 let g:xml_syntax_folding = 1
 au FileType xml setlocal foldmethod=syntax
+
+" JSON auto format with python, call with gg=G to reformat an entire file
+au FileType json setlocal equalprg=python\ -m\ json.tool
+

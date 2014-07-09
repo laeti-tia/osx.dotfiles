@@ -7,3 +7,6 @@
 [submodule "svn-color"]
 	path = svn-color
 	url = git@github.com:tonin/svn-color.git
+[submodule ".vim/bundle/vim-json"]
+	path = .vim/bundle/vim-json
+	url = https://github.com/elzr/vim-json.git
