@@ -33,31 +33,7 @@ fi
 # We use promptvars
 shopt -s promptvars
 
-# Colorful or not?
-color_enabled() {
-    local -i colors=$(tput colors 2>/dev/null)
-    [[ $? -eq 0 ]] && [[ $colors -gt 2 ]]
-}
-
-if [ color_enabled ]; then
-    export CLICOLOR=1
-    export LSCOLORS=ExGxFxDxCxDaDaabagecec
-    alias ls='ls --color=auto'
-    export PAGER="less -sRM"
-    [ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
-    export LESS="--RAW-CONTROL-CHARS"
-    export LESS_TERMCAP_mb=$'\e[38;5;009m'
-    export LESS_TERMCAP_md=$'\e[38;5;010m'
-    export LESS_TERMCAP_me=$'\e[0m'
-    export LESS_TERMCAP_se=$'\e[0m'
-    export LESS_TERMCAP_so=$'\e[48;5;004m'
-    export LESS_TERMCAP_ue=$'\e[0m'
-    export LESS_TERMCAP_us=$'\e[38;5;012m'
-    export GREP_OPTIONS="--color=auto" GREP_COLOR='38;5;208'
-    export TERM="xterm-256color"
-fi
-
-# Some useful prompt formats
+# Some useful prompt formating using tput
 if [ `uname` == FreeBSD ]; then
     # FreeBSD tput doesn't recognize the terminfo capname but only the old termcap code
     ME="me"
@@ -68,17 +44,62 @@ else
     AF="setaf"
     MD="bold"
 fi
-P_BOLD="${P_BOLD-$(color_enabled && tput ${MD})}"
-P_HOME="${P_HOME-$(color_enabled && tput ${AF} 11)}"
-P_OK="${P_OK-$(color_enabled && tput ${AF} 10)}"
-P_ERROR="${P_ERROR-$(color_enabled && tput ${AF} 9)}"
-P_WARNING="${P_WARNING-$(color_enabled && tput ${AF} 214)}"
-P_NORMAL="${P_NORMAL-$(color_enabled && tput ${AF} 15)}"
-P_INFO="${P_INFO-$(color_enabled && tput ${AF} 12)}"
-P_RESET="${P_RESET-$(color_enabled && tput ${ME})}"
+
+# How many colors can we print?
+if [ $TERM == 'xterm' ]; then
+    # Try to set a higher standard
+    export TERM="xterm-256color"
+    if [ $(tput colors) -ne 256 ]; then
+        # revert back to regular xterm
+        export TERM="xterm"
+    fi
+fi
+colors=$(tput colors 2>/dev/null)
+if [ $? -ne 0 ]; then
+    colors=2
+fi
+
+if [ $colors -gt 2 ]; then
+    # Let's hope for at least 8 colors
+    export CLICOLOR=1
+    export LSCOLORS=ExGxFxDxCxDaDaabagecec
+    alias ls='ls --color=auto'
+    export PAGER="less -sRM"
+    [ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
+    export LESS="--RAW-CONTROL-CHARS"
+    export GREP_OPTIONS="--color=auto" GREP_COLOR='39;33'
+    P_HOME="$(tput ${MD} && tput ${AF} 3)"
+    P_OK="$(tput ${MD} && tput ${AF} 2)"
+    P_ERROR="$(tput ${MD} && tput ${AF} 1)"
+    P_WARNING="$(tput ${MD} && tput ${AF} 3)"
+    P_NORMAL="$(tput ${MD} && tput ${AF} 7)"
+    P_INFO="$(tput ${MD} && tput ${AF} 6)"
+fi
+if [ $colors -gt 8 ]; then
+    # Colorful
+    export LESS_TERMCAP_mb=$'\e[38;5;009m'
+    export LESS_TERMCAP_md=$'\e[38;5;010m'
+    export LESS_TERMCAP_me=$'\e[0m'
+    export LESS_TERMCAP_se=$'\e[0m'
+    export LESS_TERMCAP_so=$'\e[48;5;004m'
+    export LESS_TERMCAP_ue=$'\e[0m'
+    export LESS_TERMCAP_us=$'\e[38;5;012m'
+    export GREP_OPTIONS="--color=auto" GREP_COLOR='38;5;208'
+    P_HOME="$(tput ${AF} 11)"
+    P_OK="$(tput ${AF} 10)"
+    P_ERROR="$(tput ${AF} 9)"
+    P_WARNING="$(tput ${AF} 214)"
+    P_NORMAL="$(tput ${AF} 15)"
+    P_INFO="$(tput ${AF} 12)"
+    export TERM="xterm-256color"
+fi
+
+# Bold and reset should be supported on all terminals
+P_BOLD="$([[ $colors -gt 2 ]] && tput ${MD})"
+P_RESET="$([[ $colors -gt 2 ]] && tput ${ME})"
 
 # Exit code
-# TODO: it would be nice to print the return code at the end of the line (far right end)
+# TODO: it would be nice to print the return code at the far right end of the line
 p_result() {
     if [[ $? == 0 ]]; then
         printf "\[$P_NORMAL\]:)\[$P_RESET\]"
