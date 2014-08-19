@@ -210,6 +210,7 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 alias screen='screen -R -D'
+alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio'
 
 # FreeBSD and OSX only
 if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
