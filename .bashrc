@@ -46,6 +46,14 @@ else
 fi
 
 # How many colors can we print?
+if [ $TERM == 'xterm' ]; then
+    # Try to set a higher standard
+    export TERM="xterm-256color"
+    if [ $(tput colors) -ne 256 ]; then
+        # revert back to regular xterm
+        export TERM="xterm"
+    fi
+fi
 colors=$(tput colors 2>/dev/null)
 if [ $? -ne 0 ]; then
     colors=2
