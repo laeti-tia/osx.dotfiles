@@ -46,10 +46,10 @@ else
 fi
 
 # How many colors can we print?
-if [ $TERM == 'xterm' ]; then
+if [[ $TERM == 'xterm' || $TERM =~ 'screen' ]]; then
     # Try to set a higher standard
     export TERM="xterm-256color"
-    if [ $(tput colors) -ne 256 ]; then
+    if [ $(tput colors) -lt 9 ]; then
         # revert back to regular xterm
         export TERM="xterm"
     fi
@@ -91,7 +91,6 @@ if [ $colors -gt 8 ]; then
     P_WARNING="$(tput ${AF} 214)"
     P_NORMAL="$(tput ${AF} 15)"
     P_INFO="$(tput ${AF} 12)"
-    export TERM="xterm-256color"
 fi
 
 # Bold and reset should be supported on all terminals
