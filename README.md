@@ -7,7 +7,7 @@ My useful ~ dot files to be replicated on each of my OSX, FreeBSD or Linux machi
 - Debian (6 - 7)
 - CentOS (5 - 6)
 
-I'm making use of this repo as suggested and described by [Kyle Fuller][1].
+I'm making use of this repo as suggested and described by [Kyle Fuller][kf].
 
 To use this repo on a new machine, do:
 
@@ -24,10 +24,10 @@ You might want to clone this repository and customise some files to your needs a
 Credits
 -------
 
-- The bash svn-color function sourced in `.bashrc` is coming from [Jean-Michel Lacroix][2].
-- The VIM fugitive git wrapper and the pathogen autoloader are from [Tim Pope][3].
-- The VIM JSON plugin is from [Eli Parra][4]
-- The VIM XML pretty format plugin if from [Cory][5]
+- The bash svn-color function sourced in `.bashrc` is coming from [Jean-Michel Lacroix][jml].
+- The VIM fugitive git wrapper and the pathogen autoloader are from [Tim Pope][tp].
+- The VIM JSON plugin is from [Eli Parra][ep].
+- The VIM XML pretty format plugin is from [Cory][cory].
 
 
 Copyright and licence
@@ -44,8 +44,8 @@ are permitted provided that the following conditions are met:
    this list of conditions in the documentation and/or other materials provided
    with the distribution.
 
-[1]: http://kylefuller.co.uk/posts/organising-dotfiles-in-a-git-repository/ "Organising dotfiles in a git repository"
-[2]: https://github.com/jmlacroix/svn-color
-[3]: http://github.com/tpope/vim-fugitive
-[4]: https://github.com/elzr/vim-json
-[5]: http://vim.wikia.com/wiki/Pretty-formatting_XML
+[kf]: http://kylefuller.co.uk/posts/organising-dotfiles-in-a-git-repository/ "Organising dotfiles in a git repository"
+[jml]: https://github.com/jmlacroix/svn-color
+[tp]: http://github.com/tpope/vim-fugitive
+[ep]: https://github.com/elzr/vim-json
+[cory]: http://vim.wikia.com/wiki/Pretty-formatting_XML
