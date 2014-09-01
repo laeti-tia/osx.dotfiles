@@ -185,7 +185,7 @@ prompt_git() {
     git branch &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
-    GITSTATUS="$(git status 2>/dev/null)"
+    GITSTATUS="$(LANG=C git status 2>/dev/null)"
     [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
@@ -230,7 +230,7 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 alias screen='screen -R -D'
-alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio'
+alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio,creation'
 
 # FreeBSD and OSX only
 if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
