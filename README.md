@@ -5,7 +5,7 @@ My useful ~ dot files to be replicated on each of my OSX, FreeBSD or Linux machi
 - OSX (10.6 - 10.9)
 - FreeBSD (9)
 - Debian (6 - 7)
-- CentOS (6)
+- CentOS (5 - 6)
 
 I'm making use of this repo as suggested and described by [Kyle Fuller][1].
 
@@ -26,12 +26,14 @@ Credits
 
 - The bash svn-color function sourced in `.bashrc` is coming from [Jean-Michel Lacroix][2].
 - The VIM fugitive git wrapper and the pathogen autoloader are from [Tim Pope][3].
+- The VIM JSON plugin is from [Eli Parra][4]
+- The VIM XML pretty format plugin if from [Cory][5]
 
 
 Copyright and licence
 ---------------------
 
-© 2013 — Antoine Delvaux — All rights reserved.
+© 2013 - 2014 — Antoine Delvaux — All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -45,3 +47,5 @@ are permitted provided that the following conditions are met:
 [1]: http://kylefuller.co.uk/posts/organising-dotfiles-in-a-git-repository/ "Organising dotfiles in a git repository"
 [2]: https://github.com/jmlacroix/svn-color
 [3]: http://github.com/tpope/vim-fugitive
+[4]: https://github.com/elzr/vim-json
+[5]: http://vim.wikia.com/wiki/Pretty-formatting_XML
