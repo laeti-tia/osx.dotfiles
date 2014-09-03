@@ -185,7 +185,7 @@ prompt_git() {
     git branch &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
-    GITSTATUS="$(LANG=C git status 2>/dev/null)"
+    GITSTATUS="$(LANG=C git status 2>/dev/null | sed 's/^# //')"
     [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
