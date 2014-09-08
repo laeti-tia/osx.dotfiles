@@ -22,6 +22,15 @@ shopt -s histappend
 # keep multi-seesion history fine
 PROMPT_COMMAND='history -a'
 
+### ssh agent forwarding and screen
+# Predictable SSH authentication socket location.
+SOCK="/tmp/ssh-agent-$USER-screen"
+if test $SSH_AUTH_SOCK && [ $SSH_AUTH_SOCK != $SOCK ]; then
+    rm -f /tmp/ssh-agent-$USER-screen
+    ln -sf $SSH_AUTH_SOCK $SOCK
+    export SSH_AUTH_SOCK=$SOCK
+fi
+
 ### Debian chroot                                                       ---------- 
 # set variable identifying the chroot you work in (used in the prompt below)
 if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
@@ -29,7 +38,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     chroot=debian_chroot
 fi
 
-## Prompt                                                               ----------
+### Prompt                                                               ----------
 # We use promptvars
 shopt -s promptvars
 
@@ -185,7 +194,8 @@ prompt_git() {
     git branch &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
-    GITSTATUS="$(LANG=C git status 2>/dev/null | sed 's/^# //')"
+    GITSTATUS="$(LANG=C git status 2>/dev/null)"
+    GITSTATUS=${GITSTATUS/\# /}
     [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
