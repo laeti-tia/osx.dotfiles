@@ -241,6 +241,7 @@ alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 alias screen='screen -R -D'
 alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio,creation'
+alias VBoxHeadless='VBoxHeadless --vrde off'
 
 # FreeBSD and OSX only
 if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
