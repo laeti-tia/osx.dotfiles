@@ -242,6 +242,8 @@ alias listen='lsof -n -i4TCP | grep LISTEN'
 alias screen='screen -R -D'
 alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio,creation'
 alias VBoxHeadless='VBoxHeadless --vrde off'
+alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+complete -F _quilt_completion $_quilt_complete_opt dquilt
 
 # FreeBSD and OSX only
 if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
