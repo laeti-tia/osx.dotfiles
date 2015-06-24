@@ -2,7 +2,7 @@ My dotfiles for ~
 =================
 
 My useful ~ dot files to be replicated on each of my OSX, FreeBSD or Linux machines.  At the beginning, this used to be a placeholder for OSX dot files only.  But as I'm working with different types of UNIX hosts, I try to keep as much compatibility as possible.  Currently, the files are tested with recent versions of:
-- OSX (10.6 - 10.9)
+- OSX (10.6 - 10.10)
 - FreeBSD (9)
 - Debian (6 - 7)
 - CentOS (5 - 6)
@@ -17,6 +17,8 @@ To use this repo on a new machine, do:
     git --git-dir=$HOME/.files.git submodule update --init
 
 And then later only use the `git-home` command instead of `git` (see the git-home alias in `.bashrc`).
+
+On OSX, if you want to use the included `~/.bashrc` file, you need to source it from the system's global `/etc/bashrc`  You just add a single line to the existing configuration that contains: `. ~/bashrc`
 
 You might want to clone this repository and customise some files to your needs and settings.
 
