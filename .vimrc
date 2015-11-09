@@ -4,6 +4,9 @@ set nocompatible
 " Load pathogen.vim and all other installed bundles
 execute pathogen#infect()
 
+" Disable auto visual mode with mouse
+set mouse-=a
+
 " We want syntax highlighting and for searches and better on dark background
 syntax on
 set hlsearch
