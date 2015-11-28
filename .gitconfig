@@ -2,7 +2,7 @@
     encoding = utf-8
 [user]
     name = Antoine Delvaux
-    email = antoine@eshango.com
+    email = antoine.delvaux@gmail.com
 [color]
     ui = auto
 [merge]
@@ -19,3 +19,5 @@
     clog = log --pretty=format:"%C(reset)%h%x09%Cgreen%an%x09%Cblue%ad%C(reset)%+d%x09%Creset%s" --date=short --graph --decorate --all
     # Only work with git > 1.8
     #clog = log --pretty=format:"%C(auto)%h%x09%Cgreen%<(15,trunc)%an%x09%Cblue%ad%C(auto)%+d%x09%Creset%<(90,trunc)%s" --date=short --graph --decorate --all
+[pull]
+	rebase = true
