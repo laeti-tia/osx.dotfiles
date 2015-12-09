@@ -265,18 +265,11 @@ if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
 fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
-source ~/.subversion/svn-color.sh
-
-# GPG 2.1 setup
-GPG_TTY=$(tty)
-export GPG_TTY
+[ -f ~/.subversion/svn-color.sh ] && source ~/.subversion/svn-color.sh
 
 # source any local settings
-source ~/.bashrc.local
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local
 
 # get a successful return code no matter what
 return 0
 
-
-PERL_MB_OPT="--install_base \"/Users/antoine/perl5\""; export PERL_MB_OPT;
-PERL_MM_OPT="INSTALL_BASE=/Users/antoine/perl5"; export PERL_MM_OPT;
