@@ -60,3 +60,8 @@ au FileType xml setlocal foldmethod=syntax
 " JSON auto format with python, call with gg=G to reformat an entire file
 au FileType json setlocal equalprg=python\ -m\ json.tool
 
+" Show fileenconding and BOMB in the status line (and always show the status line)
+if has("statusline")
+    set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
+    set laststatus=2
+endif
