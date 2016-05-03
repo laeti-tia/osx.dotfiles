@@ -220,6 +220,9 @@ prompt_svn() {
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -x /usr/local/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe.sh)"        # OSX Brew variant
 
+# ansible defaults
+export ANSIBLE_INVENTORY=./hosts
+
 ### Alias definitions                                                           ----------
 # Linux defaults
 alias ll='ls -lh'
