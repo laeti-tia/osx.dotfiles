@@ -65,3 +65,8 @@ if has("statusline")
     set statusline=%<%f\ %h%m%r%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%k\ %-14.(%l,%c%V%)\ %P
     set laststatus=2
 endif
+
+" vim-ansible-yaml
+let g:ansible_options = {'ignore_blank_lines': 0}
+filetype plugin indent on
+autocmd FileType yaml setl indentkeys-=<:>
