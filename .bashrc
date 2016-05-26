@@ -246,6 +246,7 @@ alias screen='screen -R -D'
 alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio,creation'
 alias VBoxHeadless='VBoxHeadless --vrde off'
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+alias top="LANG=C top"
 complete -F _quilt_completion $_quilt_complete_opt dquilt
 
 # FreeBSD and OSX only
