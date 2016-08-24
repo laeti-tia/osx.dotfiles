@@ -145,8 +145,9 @@ else
     MY_PROMPT="${MY_PROMPT}"'\[$P_ERROR\]'"@"'\[$P_RESET\]'
 fi
 
-# SSH session
-if [[ -n "${SSH_CONNECTION:-}" ]]; then
+# Running in an SSH session or under Docker (or other Hypervisor)
+`grep -qE "^flags[[:space:]]+: .+ hypervisor .+$" /proc/cpuinfo`
+if [[ $? -eq 0 || -n "${SSH_CONNECTION:-}" ]]; then
     MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]\h\[$P_RESET\]'
 else
     MY_PROMPT="$MY_PROMPT"'\[$P_HOME\]\h\[$P_RESET\]'

@@ -1,16 +1,25 @@
+" Load pathogen.vim and all other installed bundles
+execute pathogen#infect()
+
+" Install sane defaults
 " Just to be safe, we don't want the compatible mode
 set nocompatible
 
-" Load pathogen.vim and all other installed bundles
-execute pathogen#infect()
+" Bigger history
+set history=1000
+
+" Makes searches case-sensitive only if they contain upper-case characters
+set ignorecase smartcase
+
+" no space when joining lines, except if terminated by punctuation
+set nojoinspaces
 
 " Disable auto visual mode with mouse
 set mouse-=a
 
 " We want syntax highlighting and for searches and better on dark background
 syntax on
-set hlsearch
-set background=dark
+set hlsearch background=dark
 colorscheme sahara
 
 " Activate ruler (position within file at the bottom/right)
