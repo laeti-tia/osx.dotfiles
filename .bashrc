@@ -146,7 +146,7 @@ else
 fi
 
 # Running in an SSH session or under Docker (or other Hypervisor)
-`grep -qE "^flags[[:space:]]+: .+ hypervisor .+$" /proc/cpuinfo`
+`grep -sqE "^flags[[:space:]]+: .+ hypervisor .+$" /proc/cpuinfo`
 if [[ $? -eq 0 || -n "${SSH_CONNECTION:-}" ]]; then
     MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]\h\[$P_RESET\]'
 else
