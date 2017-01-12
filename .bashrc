@@ -197,7 +197,7 @@ prompt_git() {
     BRANCH="${HEAD##*/}"
     GITSTATUS="$(LANG=C git status 2>/dev/null)"
     GITSTATUS=${GITSTATUS/\# /}
-    [[ "$GITSTATUS" =~ "working directory clean" ]] || STATUS="❗ "
+    [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="❗ "
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
     printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${NUM}"
