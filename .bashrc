@@ -250,16 +250,23 @@ alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias top="LANG=C top"
 complete -F _quilt_completion $_quilt_complete_opt dquilt
 
+# Bash completion, if installed
+if [ -f /usr/share/bash-completion/bash_completion ]; then
+    # on Debian
+    . /usr/share/bash-completion/bash_completion
+elif [ -f /etc/bash_completion ]; then
+    # on older Debian and other Linux
+    . /etc/bash_completion
+elif [ -f /usr/local/bin/brew ] && [ -f `brew --prefix`/etc/bash_completion ]; then
+    # on OSX with brew
+    . `brew --prefix`/etc/bash_completion
+elif [ -f /usr/local/etc/bash_completion ]; then
+    # on FreeBSD if installed ("pkg install bash-completion")
+    . /usr/local/etc/bash_completion
+fi
+
 # FreeBSD and OSX only
 if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
-    # Bash completion, if installed (should be default on Debian)
-    if [ -f /usr/local/bin/brew ] && [ -f `brew --prefix`/etc/bash_completion ]; then
-        # on OSX with brew
-        . `brew --prefix`/etc/bash_completion
-    elif [ -f /usr/local/etc/bash_completion ]; then
-        # on FreeBSD if installed ("pkg install bash-completion")
-        . /usr/local/etc/bash_completion
-    fi
     alias top='/usr/bin/top -u -s 2 -S'
     alias pstree='/usr/local/bin/pstree -g 3'
     alias ls='ls -G'
