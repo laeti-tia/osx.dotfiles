@@ -30,6 +30,7 @@ Credits
 - The VIM fugitive git wrapper and the pathogen autoloader are from [Tim Pope][tp].
 - The VIM JSON plugin is from [Eli Parra][ep].
 - The VIM XML pretty format plugin is from [Cory][cory].
+- The git-scripts are from [jwiegley repo][jwiegley].
 
 
 Copyright and licence
@@ -51,3 +52,4 @@ are permitted provided that the following conditions are met:
 [tp]: http://github.com/tpope/vim-fugitive
 [ep]: https://github.com/elzr/vim-json
 [cory]: http://vim.wikia.com/wiki/Pretty-formatting_XML
+[jwiegley]: https://github.com/jwiegley/git-scripts

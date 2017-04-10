@@ -4,7 +4,7 @@
 [[ $- != *i* ]] && return
 
 ### Default environment                                                 ----------
-export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=~/.git-scripts:/usr/local/bin:/usr/local/sbin:$PATH
 export MAVEN_OPTS="-XX:MaxPermSize=256m"
 # We use vi mode and vim as EDITOR
 set -o vi

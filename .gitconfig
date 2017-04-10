@@ -12,13 +12,11 @@
 [github]
     user = tonin
 [push]
-#    default = simple            # Only work with git > 1.8
+    default = simple            # Only work with git > 1.8
 [core]
     excludesfile = ~/.mygitignore
 [alias]
-    clog = log --pretty=format:"%C(reset)%h%x09%Cgreen%an%x09%Cblue%ad%C(reset)%+d%x09%Creset%s" --date=short --graph --decorate --all
-    # Only work with git > 1.8
-    #clog = log --pretty=format:"%C(auto)%h%x09%Cgreen%<(15,trunc)%an%x09%Cblue%ad%C(auto)%+d%x09%Creset%<(90,trunc)%s" --date=short --graph --decorate --all
+    clog = log --pretty=format:"%C(auto)%h%x09%Cgreen%<(15,trunc)%an%x09%Cblue%ad%C(auto)%+d%x09%Creset%<(90,trunc)%s" --date=short --graph --decorate --all
     clogs = !git clog --simplify-by-decoration
 [pull]
     rebase = true
