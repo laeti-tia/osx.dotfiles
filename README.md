@@ -13,6 +13,7 @@ To use this repo on a new machine, do:
 
     git --work-tree=$HOME --git-dir=$HOME/.files.git init
     git --work-tree=$HOME --git-dir=$HOME/.files.git remote add origin https://github.com/tonin/osx.dotfiles.git
+    mv .bashrc bashrc.bkp
     git --work-tree=$HOME --git-dir=$HOME/.files.git pull origin master
     git --git-dir=$HOME/.files.git submodule update --init
 
