@@ -2,10 +2,10 @@ My dotfiles for ~
 =================
 
 My useful ~ dot files to be replicated on each of my OSX, FreeBSD or Linux machines.  At the beginning, this used to be a placeholder for OSX dot files only.  But as I'm working with different types of UNIX hosts, I try to keep as much compatibility as possible.  Currently, the files are tested with recent versions of:
-- OSX (10.6 - 10.10)
-- FreeBSD (9)
-- Debian (6 - 7)
-- CentOS (5 - 6)
+- OSX (10.11)
+- FreeBSD (10)
+- Debian (8) (and 7 with an updated git)
+- CentOS (6)
 
 I'm making use of this repo as suggested and described by [Kyle Fuller][kf].
 
