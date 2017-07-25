@@ -148,9 +148,16 @@ fi
 # Running in an SSH session or under Docker (or other Hypervisor)
 `grep -sqE "^flags[[:space:]]+: .+ hypervisor .+$" /proc/cpuinfo`
 if [[ $? -eq 0 || -n "${SSH_CONNECTION:-}" ]]; then
-    MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]\h\[$P_RESET\]'
+    MY_PROMPT="$MY_PROMPT"'\[$P_WARNING\]'
 else
-    MY_PROMPT="$MY_PROMPT"'\[$P_HOME\]\h\[$P_RESET\]'
+    MY_PROMPT="$MY_PROMPT"'\[$P_HOME\]'
+fi
+
+# Get the computer name correct, even if using dhcp with forced hostname
+if [ `uname` == Darwin ]; then
+    MY_PROMPT="$MY_PROMPT"$(scutil --get ComputerName)'\[$P_RESET\]'
+else
+    MY_PROMPT="$MY_PROMPT"'\h\[$P_RESET\]'
 fi
 
 # Chroot jail path
