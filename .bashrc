@@ -76,7 +76,8 @@ if [ $colors -gt 2 ]; then
     export PAGER="less -sRM"
     [ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
     export LESS="--RAW-CONTROL-CHARS"
-    export GREP_OPTIONS="--color=auto" GREP_COLOR='39;33'
+    alias grep='grep --color=auto'
+    export GREP_COLOR='39;33'
     P_HOME="$(tput ${MD} && tput ${AF} 3)"
     P_OK="$(tput ${MD} && tput ${AF} 2)"
     P_ERROR="$(tput ${MD} && tput ${AF} 1)"
@@ -93,7 +94,8 @@ if [ $colors -gt 8 ]; then
     export LESS_TERMCAP_so=$'\e[48;5;004m'
     export LESS_TERMCAP_ue=$'\e[0m'
     export LESS_TERMCAP_us=$'\e[38;5;012m'
-    export GREP_OPTIONS="--color=auto" GREP_COLOR='38;5;208'
+    alias grep='grep --color=auto'
+    export GREP_COLOR='38;5;208'
     P_HOME="$(tput ${AF} 11)"
     P_OK="$(tput ${AF} 10)"
     P_ERROR="$(tput ${AF} 9)"
