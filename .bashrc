@@ -13,6 +13,17 @@ export EDITOR=vim
 shopt -s checkwinsize
 export MANWIDTH="tty"
 
+### Setting a sane locale
+if ! locale -a | grep -iq 'fr_BE.UTF8'; then
+    export LANG=fr_BE.UTF-8
+elif ! locale -a | grep -iq 'en_US.UTF8'; then
+    export LANG=en_US.UTF8
+elif ! locale -a | grep -iq 'C.UTF8'; then
+    export LANG=C.UTF8
+else
+    export LANG=C
+fi
+
 ### History                                                             ----------
 # ignoredups and ignorespace, append to the history file, don't overwrite it
 export HISTCONTROL=ignoreboth
@@ -201,7 +212,7 @@ prompt_vcs() {
 # Git prompt
 prompt_git() {
     # Are we in a git repository?
-    git branch &>/dev/null || return 1
+    git branch --no-color &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD##*/}"
     GITSTATUS="$(LANG=C git status 2>/dev/null)"
