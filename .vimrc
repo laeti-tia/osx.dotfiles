@@ -24,8 +24,7 @@ colorscheme sahara
 
 " Activate ruler (position within file at the bottom/right)
 set ruler
-"set modeline
-"set modelines=5
+set modeline
 
 " Default tab-key behavior: insert 4 spaces
 " (then use :%retab to convert all tabs to spaces)
@@ -75,7 +74,6 @@ if has("statusline")
     set laststatus=2
 endif
 
-" vim-ansible-yaml
-let g:ansible_options = {'ignore_blank_lines': 0}
+" ansible-vim
+let g:ansible_unindent_after_newline = 1
 filetype plugin indent on
-autocmd FileType yaml setl indentkeys-=<:>
