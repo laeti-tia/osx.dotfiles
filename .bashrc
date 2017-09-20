@@ -3,6 +3,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# When debugging is needed
+#shopt -os xtrace
+#shopt -ou xtrace
+
 ### Default environment                                                 ----------
 export PATH=~/.git-scripts:/usr/local/bin:/usr/local/sbin:$PATH
 export MAVEN_OPTS="-XX:MaxPermSize=256m"
@@ -14,12 +18,12 @@ shopt -s checkwinsize
 export MANWIDTH="tty"
 
 ### Setting a sane locale
-if ! locale -a | grep -iq 'fr_BE.UTF8'; then
+if locale -a | grep -iq 'fr_BE.UTF'; then
     export LANG=fr_BE.UTF-8
-elif ! locale -a | grep -iq 'en_US.UTF8'; then
-    export LANG=en_US.UTF8
-elif ! locale -a | grep -iq 'C.UTF8'; then
-    export LANG=C.UTF8
+elif locale -a | grep -iq 'en_US.UTF'; then
+    export LANG=en_US.UTF-8
+elif locale -a | grep -iq 'C.UTF'; then
+    export LANG=C.UTF-8
 else
     export LANG=C
 fi
