@@ -53,7 +53,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     chroot=debian_chroot
 fi
 
-### Prompt                                                               ----------
+### Prompt                                                              ----------
 # We use promptvars
 shopt -s promptvars
 
@@ -208,7 +208,7 @@ prompt_jobs() {
 }
 MY_PATH="$MY_PATH"'\[$P_WARNING\]'"\$(prompt_jobs)"'\[$P_RESET\]'
 
-### Versionning Control Systems                                                 ----------
+### Versionning Control Systems                                         ----------
 # We look for GIT then SVN -- called at runtime
 prompt_vcs() {
     prompt_git || prompt_svn;
@@ -245,10 +245,8 @@ prompt_svn() {
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 [ -x /usr/local/bin/lesspipe.sh ] && eval "$(SHELL=/bin/sh lesspipe.sh)"        # OSX Brew variant
 
-# ansible defaults
-export ANSIBLE_INVENTORY=./hosts
 
-### Alias definitions                                                           ----------
+### Alias definitions                                                   ----------
 # Linux defaults
 alias ll='ls -lh'
 alias df='df -h'
