@@ -5,6 +5,9 @@ execute pathogen#infect()
 " Just to be safe, we don't want the compatible mode
 set nocompatible
 
+" Number lines (might be useful against MacOS Terminal.app crashes)
+" set number
+
 " Bigger history
 set history=1000
 

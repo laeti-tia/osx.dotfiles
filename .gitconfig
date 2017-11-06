@@ -21,3 +21,5 @@
     clogs = !git clog --simplify-by-decoration
 [pull]
     rebase = true
+[include]
+    path = .gitconfig.local

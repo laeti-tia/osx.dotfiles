@@ -1,23 +1,18 @@
 My dotfiles for ~
 =================
 
-My useful ~ dot files to be replicated on each of my OSX, FreeBSD or Linux machines.  At the beginning, this used to be a placeholder for OSX dot files only.  But as I'm working with different types of UNIX hosts, I try to keep as much compatibility as possible.  Currently, the files are tested with recent versions of:
-- OSX (10.11)
+My useful ~ dot files to be replicated on each of my MacOS, FreeBSD or Linux machines.  At the beginning, this used to be a placeholder for OSX dot files only.  But as I'm working with different types of UNIX hosts, I try to keep as much compatibility as possible.  Currently, the files are tested with recent versions of:
+- OSX (10.12)
 - FreeBSD (10)
-- Debian (8) (and 7 with an updated git)
+- Debian (8,9) (and 7 with an updated git)
 - CentOS (6)
 
-I'm making use of this repo as suggested and described by [Kyle Fuller][kf].
+I was making use of this repo as suggested and described by [Kyle Fuller][kf].  But I'm now using it following the [DebOps][debops] conventions, using a deploy script.
 
 To use this repo on a new machine, do:
 
-    git --work-tree=$HOME --git-dir=$HOME/.files.git init
-    git --work-tree=$HOME --git-dir=$HOME/.files.git remote add origin https://github.com/tonin/osx.dotfiles.git
-    mv .bashrc bashrc.bkp
-    git --work-tree=$HOME --git-dir=$HOME/.files.git pull origin master
-    git --git-dir=$HOME/.files.git submodule update --init
-
-And then later only use the `git-home` command instead of `git` (see the git-home alias in `.bashrc`).
+    git clone https://github.com/tonin/osx.dotfiles.git .config/dotfiles
+    ./.config/dotfiles/deploy.sh
 
 On OSX, if you want to use the included `~/.bashrc` file, you need to source it from the system's global `/etc/bashrc`  You just add a single line to the existing configuration that contains: `. ~/bashrc`
 
@@ -37,7 +32,7 @@ Credits
 Copyright and licence
 ---------------------
 
-© 2013 - 2014 — Antoine Delvaux — All rights reserved.
+© 2013 - 2017 — Antoine Delvaux — All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -49,6 +44,7 @@ are permitted provided that the following conditions are met:
    with the distribution.
 
 [kf]: http://kylefuller.co.uk/posts/organising-dotfiles-in-a-git-repository/ "Organising dotfiles in a git repository"
+[debops]: https://docs.debops.org/en/latest/ansible/roles/ansible-users/docs/index.html
 [jml]: https://github.com/jmlacroix/svn-color
 [tp]: http://github.com/tpope/vim-fugitive
 [ep]: https://github.com/elzr/vim-json

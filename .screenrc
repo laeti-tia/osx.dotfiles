@@ -7,6 +7,8 @@ startup_message off
 vbell off
 # Use alternate screen to display man pages, less output, etc.
 altscreen on
+# 0 screen is for when we need to connect to USB serial line
+# screen 0 /dev/tty.usbserial 115200,-parenb,-cstopb,cs8
 # 1st screen window is a bash shell with regular user
 screen 1 bash
 # 2nd screen window is a superuser bash shell
