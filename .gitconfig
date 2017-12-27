@@ -17,9 +17,11 @@
     excludesfile = ~/.mygitignore
 [alias]
     s = status -sb
-    clog = log --pretty=format:"%C(auto)%h%x09%Cgreen%<(15,trunc)%an%x09%Cblue%ad%C(auto)%+d%x09%Creset%<(90,trunc)%s" --date=short --graph --decorate --all
+    clog = log --pretty=format:"%C(auto)%h%x09%Cgreen%<(15,trunc)%an%x09%<(2)%Cred%G?%Cblue%ad%C(auto)%+d%x09%Creset%<(90,trunc)%s" --date=short --graph --decorate --all
     clogs = !git clog --simplify-by-decoration
 [pull]
     rebase = true
 [include]
     path = .gitconfig.local
+[commit]
+    gpgSign = yes
