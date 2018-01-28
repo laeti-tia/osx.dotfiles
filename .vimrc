@@ -28,6 +28,8 @@ colorscheme sahara
 " Activate ruler (position within file at the bottom/right)
 set ruler
 set modeline
+" Use , instead of \ as Leader key
+let mapleader = ','
 
 " Default tab-key behavior: insert 4 spaces
 " (then use :%retab to convert all tabs to spaces)
@@ -77,6 +79,8 @@ if has("statusline")
     set laststatus=2
 endif
 
-" ansible-vim
+" ansible-vim see https://github.com/pearofducks/ansible-vim
 let g:ansible_unindent_after_newline = 1
+let g:ansible_extra_keywords_highlight = 1
 filetype plugin indent on
+au BufRead,BufNewFile */playbooks/*.yml set filetype=ansible
