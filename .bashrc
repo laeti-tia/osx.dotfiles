@@ -219,7 +219,7 @@ prompt_git() {
     # Are we in a git repository?
     git branch --no-color &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
-    BRANCH="${HEAD##*/}"
+    BRANCH="${HEAD#refs\/heads\/}"
     GITSTATUS="$(LANG=C git status 2>/dev/null)"
     GITSTATUS=${GITSTATUS/\# /}
     [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="❗ "
@@ -271,6 +271,7 @@ alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compress
 alias VBoxHeadless='VBoxHeadless --vrde off'
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias top="LANG=C top"
+alias youtube-dl-mp4="youtube-dl --format mp4"
 complete -F _quilt_completion $_quilt_complete_opt dquilt
 
 # Bash completion, if installed
