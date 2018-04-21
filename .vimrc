@@ -84,3 +84,6 @@ let g:ansible_unindent_after_newline = 1
 let g:ansible_extra_keywords_highlight = 1
 filetype plugin indent on
 au BufRead,BufNewFile */playbooks/*.yml set filetype=ansible
+
+" sshconfig syntax coloring on all config files
+au BufRead,BufNewFile ~/.ssh/config.* set filetype=sshconfig
