@@ -3,7 +3,7 @@ cd $(dirname "$0")
 git submodule update --init
 /bin/cp .* ~/ 2>/dev/null
 /bin/mkdir -p ~/.git-scripts/
-/bin/cp .git-scripts/* ~/.git-scripts/
+/bin/cp -a .git-scripts/* ~/.git-scripts/
 /bin/cp .ssh/authorized_keys ~/.ssh/
 /bin/mkdir -p ~/.subversion
 /bin/cp .subversion/* ~/.subversion/
