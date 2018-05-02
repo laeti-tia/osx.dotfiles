@@ -23,5 +23,3 @@
     rebase = true
 [include]
     path = .gitconfig.local
-[commit]
-    gpgSign = yes
