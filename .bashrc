@@ -299,6 +299,9 @@ if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
     if [ `uname` == FreeBSD ]; then
         alias top='/usr/bin/top -a -z -s 2 -S'
     fi
+    if [[ `uname` == Darwin ]]; then
+        ulimit -n 2048
+    fi
 fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
