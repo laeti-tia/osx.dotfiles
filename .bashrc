@@ -18,6 +18,7 @@ shopt -s checkwinsize
 export MANWIDTH="tty"
 
 ### Setting a sane locale
+LANGUAGE="fr:es:en"
 if locale -a | grep -iq 'fr_BE.UTF'; then
     export LANG=fr_BE.UTF-8
 elif locale -a | grep -iq 'en_US.UTF'; then
