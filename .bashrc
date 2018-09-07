@@ -199,7 +199,7 @@ case "$TERM" in
         MY_PATH="$MY_PATH"'\[\033]0;\u@\h:'"${chroot}"'${PWD}\007\]'
         ;;
     screen)
-        MY_PATH="$MY_PATH"'\[\033_\u@\h:'"${chroot}"'${PWD}\033\\\'
+        MY_PATH="$MY_PATH"'\[\033_\u@\h:'"${chroot}"'${PWD}\033\]'
         ;;
 esac
 unset chroot
@@ -223,7 +223,7 @@ prompt_git() {
     BRANCH="${HEAD#refs\/heads\/}"
     GITSTATUS="$(LANG=C git status 2>/dev/null)"
     GITSTATUS=${GITSTATUS/\# /}
-    [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="❗ "
+    [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="!"
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
     printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${NUM}"

@@ -10,7 +10,7 @@ altscreen on
 # 0 screen is for when we need to connect to USB serial line
 # screen 0 /dev/tty.usbserial 115200,-parenb,-cstopb,cs8
 # 1st screen window is a bash shell with regular user
-screen 1 bash
+screen 1 bash -o vi
 # 2nd screen window is a superuser bash shell in vi mode (set -o vi)
 screen -t root 2 sudo bash -o vi
 # Bind ctrl-a c to creating screen window number 1, to avoid using window 0 which confuses me
