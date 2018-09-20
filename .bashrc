@@ -223,6 +223,9 @@ prompt_git() {
     BRANCH="${HEAD#refs\/heads\/}"
     # TODO: should probably use git status -sb
     GITSTATUS="$(LANG=C git status --show-stash 2>/dev/null)"
+    if [[ ! $? -eq 0 ]]; then
+        GITSTATUS="$(LANG=C git status 2>/dev/null)"
+    fi
     GITSTATUS=${GITSTATUS//\# /}
     [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="!"
     # How many local commits do we have ahead of origin?
