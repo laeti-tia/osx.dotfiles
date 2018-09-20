@@ -221,8 +221,9 @@ prompt_git() {
     git branch --no-color &>/dev/null || return 1
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD#refs\/heads\/}"
+    # TODO: should probably use git status -sb
     GITSTATUS="$(LANG=C git status 2>/dev/null)"
-    GITSTATUS=${GITSTATUS/\# /}
+    GITSTATUS=${GITSTATUS//\# /}
     [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="!"
     # How many local commits do we have ahead of origin?
     NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
@@ -275,6 +276,23 @@ alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias top="LANG=C top"
 alias youtube-dl-mp4="youtube-dl --format mp4"
 complete -F _quilt_completion $_quilt_complete_opt dquilt
+
+# A nice ps | grep, see https://serverfault.com/questions/367921/how-to-prevent-ps-reporting-its-own-process
+psgrep ()
+{
+    pattern=[^]]${1};
+    case "$(uname -s)" in
+        Darwin)
+            ps -A -ww -o user,pid,ppid,nice,pri,pcpu,pmem,stat,start,time,wchan,command | grep -e "^[[:space:]]*USER" -e ${pattern}
+        ;;
+        Linux)
+            ps -A -ww -o user,pid,ppid,tid,nice,pri,pcpu,pmem,etime,wchan:20,stat,command | grep -e "^[[:space:]]*PID" -e ${pattern}
+        ;;
+        *)  # other UNIX flavors get a minimalist version.
+            ps -A -ww | grep -i -e ${pattern}
+        ;;
+    esac
+}
 
 # Bash completion, if installed
 if [ -f /usr/share/bash-completion/bash_completion ]; then
