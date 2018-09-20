@@ -222,12 +222,14 @@ prompt_git() {
     HEAD="$(git symbolic-ref HEAD 2>/dev/null)"
     BRANCH="${HEAD#refs\/heads\/}"
     # TODO: should probably use git status -sb
-    GITSTATUS="$(LANG=C git status 2>/dev/null)"
+    GITSTATUS="$(LANG=C git status --show-stash 2>/dev/null)"
     GITSTATUS=${GITSTATUS//\# /}
     [[ $GITSTATUS =~ working\ (directory|tree)\ clean ]] || STATUS="!"
     # How many local commits do we have ahead of origin?
-    NUM=$(echo $GITSTATUS | awk '/Your branch is ahead of/ {print "+"$11;}') || ""
-    printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${NUM}"
+    NUM=$(echo "$GITSTATUS" | awk '/Your branch is ahead of / {print "+"$8;}') || ""
+    # And what does the stash contains?
+    STASH=$(echo "$GITSTATUS" | awk '/Your stash currently has / {print "•"$5;}') || ""
+    printf "(git:\[$P_OK\]%s\[$P_RESET\]%s\[$P_WARNING\]%s\[$P_RESET\])" "${BRANCH:-unknown}" "\[$P_ERROR\]${STATUS}\[$P_RESET\]" "${NUM}${STASH}"
 }
 # SVN prompt
 prompt_svn() {
