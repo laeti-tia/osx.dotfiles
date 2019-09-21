@@ -196,10 +196,10 @@ MY_PATH="$MY_PATH"'\[$P_RESET\]'
 # Title bar
 case "$TERM" in
     xterm*|rxvt*|Eterm|aterm|kterm|gnome*)
-        MY_PATH="$MY_PATH"'\[\033]0;\u@\h:'"${chroot}"'${PWD}\007\]'
+        MY_PATH="$MY_PATH"'\[\033]0;\u@\h:'"${chroot}"'${PWD/#\/?(Users)?(home)\/antoine/\~}\007\]'
         ;;
     screen)
-        MY_PATH="$MY_PATH"'\[\033_\u@\h:'"${chroot}"'${PWD}\033\]'
+        MY_PATH="$MY_PATH"'\[\033_\u@\h:'"${chroot}"'${PWD/#\/?(Users)?(home)\/antoine/\~}\033\]'
         ;;
 esac
 unset chroot
