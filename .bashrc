@@ -279,7 +279,7 @@ alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compress
 alias VBoxHeadless='VBoxHeadless --vrde off'
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias top="LANG=C top"
-alias youtube-dl-mp4="youtube-dl --format mp4"
+alias youtube-dl-mp4="youtube-dl -f 'bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=1080]/best[height<=1080]'"
 complete -F _quilt_completion $_quilt_complete_opt dquilt
 
 # A nice ps | grep, see https://serverfault.com/questions/367921/how-to-prevent-ps-reporting-its-own-process

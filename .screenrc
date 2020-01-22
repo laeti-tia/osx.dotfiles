@@ -8,7 +8,12 @@ vbell off
 # Use alternate screen to display man pages, less output, etc.
 altscreen on
 # 0 screen is for when we need to connect to USB serial line
-# screen 0 /dev/tty.usbserial 115200,-parenb,-cstopb,cs8
+# -parenb: no parity bit
+# parenb: parity bit enabled
+# -cstopb: one stop bit
+# cstopb: two stop bits
+# cs8: 8-bits per character
+#screen 0 /dev/tty.usbserial 115200,-parenb,-cstopb,cs8
 # 1st screen window is a bash shell with regular user
 screen 1 bash --rcfile ~/.bashrc
 # 2nd screen window is a superuser bash shell in vi mode (set -o vi)
