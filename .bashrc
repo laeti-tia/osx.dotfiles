@@ -16,6 +16,8 @@ export EDITOR=vim
 # check the window size after each command and, if necessary, update the values of LINES and COLUMNS.
 shopt -s checkwinsize
 export MANWIDTH="tty"
+# Silence Docker advices
+export DOCKER_SCAN_SUGGEST=false
 
 ### Setting a sane locale
 LANGUAGE="fr:es:en"
@@ -325,6 +327,7 @@ if [[ `uname` =~ (Darwin|FreeBSD) ]]; then
     fi
     if [[ `uname` == Darwin ]]; then
         ulimit -n 2048
+        export BASH_SILENCE_DEPRECATION_WARNING=1
     fi
 fi
 
