@@ -21,6 +21,8 @@ set expandtab smarttab
 filetype plugin indent on
 " Except for Makefiles
 autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
+" .make files are Makefiles
+au BufNewFile,BufRead *.make setf make
 " Use , instead of \ as Leader key
 let mapleader = ','
 
