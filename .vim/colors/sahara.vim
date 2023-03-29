@@ -29,12 +29,14 @@ if has("gui_running") || &t_Co == 256
     highlight Constant     term=NONE cterm=NONE ctermfg=217  ctermbg=NONE gui=NONE guifg=#ffafaf guibg=NONE
     highlight Cursor       term=NONE cterm=NONE ctermfg=66   ctermbg=222  gui=NONE guifg=#5f8787 guibg=#ffd787
     highlight CursorLine   term=NONE cterm=NONE ctermfg=NONE ctermbg=235  gui=NONE guifg=NONE    guibg=#4c4c4c
+    highlight Define       term=NONE cterm=NONE ctermfg=142  ctermbg=NONE gui=NONE guifg=#c6c6c6 guibg=#000000
     highlight DiffAdd      term=NONE cterm=NONE ctermfg=NONE ctermbg=22   gui=NONE guifg=NONE    guibg=#005f00
     highlight DiffChange   term=NONE cterm=NONE ctermfg=NONE ctermbg=17   gui=NONE guifg=NONE    guibg=#00005f
     highlight DiffDelete   term=NONE cterm=NONE ctermfg=NONE ctermbg=52   gui=NONE guifg=NONE    guibg=#5f0000
     highlight DiffText     term=NONE cterm=NONE ctermfg=NONE ctermbg=19   gui=NONE guifg=NONE    guibg=#0000af
     highlight FoldColumn   term=NONE cterm=NONE ctermfg=180  ctermbg=237  gui=NONE guifg=#d7af87 guibg=#3a3a3a
     highlight Folded       term=NONE cterm=NONE ctermfg=220  ctermbg=237  gui=NONE guifg=#ffd700 guibg=#3a3a3a
+    highlight Function     term=NONE cterm=NONE ctermfg=227   ctermbg=NONE gui=NONE guifg=#87ff87 guibg=NONE
     highlight Identifier   term=NONE cterm=NONE ctermfg=120  ctermbg=NONE gui=NONE guifg=#87ff87 guibg=NONE
     highlight Ignore       term=NONE cterm=NONE ctermfg=240  ctermbg=NONE gui=NONE guifg=#585858 guibg=NONE
     highlight IncSearch    term=NONE cterm=NONE ctermfg=147  ctermbg=24   gui=NONE guifg=#afafff guibg=#005f87
@@ -42,6 +44,7 @@ if has("gui_running") || &t_Co == 256
     highlight MoreMsg      term=NONE cterm=NONE ctermfg=29   ctermbg=NONE gui=NONE guifg=#00875f guibg=NONE
     highlight NonText      term=NONE cterm=NONE ctermfg=237  ctermbg=NONE gui=NONE guifg=#3a3a3a guibg=NONE
     highlight Normal       term=NONE cterm=NONE ctermfg=251  ctermbg=NONE gui=NONE guifg=#c6c6c6 guibg=#000000
+    "highlight Number       term=NONE cterm=NONE ctermfg=142  ctermbg=NONE gui=NONE guifg=#c6c6c6 guibg=#000000
     highlight Pmenu        term=NONE cterm=NONE ctermfg=231  ctermbg=237  gui=NONE guifg=#ffffff guibg=#3a3a3a
     highlight PreProc      term=NONE cterm=NONE ctermfg=167  ctermbg=NONE gui=NONE guifg=#d75f5f guibg=NONE
     highlight Question     term=NONE cterm=NONE ctermfg=48   ctermbg=NONE gui=NONE guifg=#00ff87 guibg=NONE

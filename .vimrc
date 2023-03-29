@@ -21,8 +21,6 @@ set expandtab smarttab
 filetype plugin indent on
 " Except for Makefiles
 autocmd FileType make set tabstop=8 shiftwidth=8 softtabstop=0 noexpandtab
-" .make files are Makefiles
-au BufNewFile,BufRead *.make setf make
 " Use , instead of \ as Leader key
 let mapleader = ','
 
@@ -78,7 +76,9 @@ runtime macros/justify.vim
 " --- File types, language and format specifics ---
 " Adding a few filetypes
 au BufNewFile,BufRead *.ddl set filetype=sql
+au BufNewFile,BufRead *.make setf make
 au BufNewFile,BufRead Capfile set filetype=ruby
+au BufNewFile,BufRead Dockerfile-* set filetype=dockerfile
 
 " Use a better ctags binary
 let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"
@@ -96,4 +96,9 @@ au FileType json setlocal equalprg=python\ -m\ json.tool
 
 " sshconfig syntax coloring on all config files
 au BufRead,BufNewFile ~/.ssh/config.* set filetype=sshconfig
+
+" My Debian changelog signature
+iabbrev <expr> debsig
+    \ ' -- Lætitia Delvaux <adelvaux@man.poznan.pl>  '
+    \ . strftime('%a, %d %b %Y %H:%M:%S %z')
 

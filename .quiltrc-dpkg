@@ -2,22 +2,22 @@ d=.
 while ! ( [ -d $d/debian ] || [ -d $d/unibuild-packaging/deb ] ) && [[ `readlink $d` != / ]]; do
     d=$d/..
 done
-if [ -d $d/debian ] && [ -z $QUILT_PATCHES ]; then
+if [ -z $QUILT_PATCHES ]; then
     # if in Debian packaging tree with unset $QUILT_PATCHES
-    QUILT_PATCHES="debian/patches"
+    if [ -d $d/debian ]; then
+        QUILT_PATCHES="$d/debian/patches"
+    fi
+    if [ -d $d/unibuild-packaging/deb ]; then
+        QUILT_PATCHES="$d/unibuild-packaging/deb/patches"
+    fi
+    QUILT_PUSH_ARGS="--color=auto"
 #    QUILT_PATCH_OPTS="--reject-format=unified"
-#    QUILT_DIFF_ARGS="-p ab --no-timestamps --no-index --color=auto"
-#    QUILT_REFRESH_ARGS="-p ab --no-timestamps --no-index"
-# This is as used in the perfSONAR release script when call `quilt push --refresh`
-    QUILT_REFRESH_ARGS="--no-index"
-    QUILT_COLORS="diff_hdr=1;32:diff_add=1;34:diff_rem=1;31:diff_hunk=1;33:diff_ctx=35:diff_cctx=33"
-    if ! [ -d $d/debian/patches ]; then mkdir $d/debian/patches; fi
-fi
-if [ -d $d/unibuild-packaging/deb ]; then
-    # if in Debian packaging tree with unset $QUILT_PATCHES
-    QUILT_PATCHES="unibuild-packaging/deb/patches"
+    QUILT_DIFF_ARGS="--no-timestamps --color=auto"
     # This is as used in the perfSONAR release script when call `quilt push --refresh`
-    QUILT_REFRESH_ARGS="--no-index"
+    QUILT_REFRESH_ARGS="-p ab --no-index"
+#    QUILT_REFRESH_ARGS="-p ab --no-timestamps"
     QUILT_COLORS="diff_hdr=1;32:diff_add=1;34:diff_rem=1;31:diff_hunk=1;33:diff_ctx=35:diff_cctx=33"
-    if ! [ -d $d/unibuild-packaging/deb/patches ]; then mkdir $d/unibuild-packaging/deb/patches; fi
+    if ! [ -d $QUILT_PATCHES ]; then
+        mkdir $QUILT_PATCHES
+    fi
 fi

@@ -8,7 +8,7 @@
 #shopt -ou xtrace
 
 ### Default environment                                                 ----------
-export PATH=~/.git-scripts:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH="~/.git-scripts:/usr/local/bin:/usr/local/sbin:"$PATH
 export MAVEN_OPTS="-XX:MaxPermSize=256m"
 # We use vi mode and vim as EDITOR
 set -o vi
@@ -263,7 +263,7 @@ alias df='df -h'
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias vi='vim'
+alias vi='LANG=C vim'
 alias psa='ps aux'
 alias who='who -HTu'
 alias diffpatch='diff -Naur'
@@ -333,6 +333,9 @@ fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
 [ -f ~/.subversion/svn-color.sh ] && source ~/.subversion/svn-color.sh
+
+# perfSONAR Development with https://github.com/perfsonar/docker-devbox/
+[ -f /usr/local/share/docker-devbox/setup ] && eval $(/usr/local/share/docker-devbox/setup --aliases)
 
 # source any local settings
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local
