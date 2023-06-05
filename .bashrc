@@ -283,6 +283,8 @@ alias VBoxHeadless='VBoxHeadless --vrde off'
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 alias top="LANG=C top"
 alias youtube-dl-mp4="youtube-dl -f 'bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=1080]/best[height<=1080]'"
+alias yt-dlp-mp4="yt-dlp -f 'bestvideo[ext=mp4][height<=1080]+bestaudio[ext=m4a]/best[ext=mp4][height<=1080]/best[height<=1080]'"
+alias dequarantine="xattr -d com.apple.quarantine"
 complete -F _quilt_completion $_quilt_complete_opt dquilt
 
 # A nice ps | grep, see https://serverfault.com/questions/367921/how-to-prevent-ps-reporting-its-own-process
