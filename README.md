@@ -11,7 +11,7 @@ I was making use of this repo as suggested and described by [Kyle Fuller][kf].  
 
 To use this repo on a new machine, do:
 
-    git clone https://github.com/tonin/osx.dotfiles.git .config/dotfiles
+    git clone https://github.com/laeti-tia/osx.dotfiles.git .config/dotfiles
     ./.config/dotfiles/deploy.sh
 
 On OSX, if you want to use the included `~/.bashrc` file, you need to source it from the system's global `/etc/bashrc`  You just add a single line to the existing configuration that contains: `. ~/bashrc`

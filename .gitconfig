@@ -10,9 +10,9 @@
 [i18n]
     commitencoding = utf-8
 [github]
-    user = tonin
+    user = laeti-tia
 [push]
-    default = simple            # Only work with git > 1.8
+    default = simple
 [core]
     excludesfile = ~/.mygitignore
 [alias]
