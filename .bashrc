@@ -95,13 +95,14 @@ if [ $colors -gt 2 ]; then
     [ -x /usr/bin/dircolors ] && eval "`dircolors -b`"
     export LESS="--RAW-CONTROL-CHARS"
     alias grep='grep --color=auto'
-    export GREP_COLOR='39;33'
+    export GREP_COLOR='mt=39;33'
     P_HOME="$(tput ${MD} && tput ${AF} 3)"
     P_OK="$(tput ${MD} && tput ${AF} 2)"
     P_ERROR="$(tput ${MD} && tput ${AF} 1)"
     P_WARNING="$(tput ${MD} && tput ${AF} 3)"
     P_NORMAL="$(tput ${MD} && tput ${AF} 7)"
     P_INFO="$(tput ${MD} && tput ${AF} 6)"
+    P_QUEER="$(tput ${MD} && tput ${AF} 12)"
 fi
 if [ $colors -gt 8 ]; then
     # Colorful
@@ -113,7 +114,7 @@ if [ $colors -gt 8 ]; then
     export LESS_TERMCAP_ue=$'\e[0m'
     export LESS_TERMCAP_us=$'\e[38;5;012m'
     alias grep='grep --color=auto'
-    export GREP_COLOR='38;5;208'
+    export GREP_COLOR='mt=38;5;208'
     P_HOME="$(tput ${AF} 11)"
     P_OK="$(tput ${AF} 10)"
     P_ERROR="$(tput ${AF} 9)"
@@ -138,7 +139,7 @@ p_result() {
 
 # PS1 needs to be re-evaluated after each command, because we use colors in the functions
 set_bash_prompt() {
-    PS1="${MY_PROMPT}$(p_result)${MY_PATH}$(prompt_vcs)\\$ "
+    PS1="${MY_PROMPT}$(p_result)${MY_PATH}$(prompt_vcs)"'-\[$P_QUEER\]⚧ \[$P_RESET\]'
 }
 PROMPT_COMMAND="set_bash_prompt; ${PROMPT_COMMAND}"
 MY_PROMPT=""
@@ -277,7 +278,6 @@ alias ssh-vnc='ssh -o UserKnownHostsFile=/dev/null -C -L 5900:localhost:5900'
 alias ssh-http='ssh -o UserKnownHostsFile=/dev/null -C -L 8080:localhost:80'
 alias listen='lsof -n -i4TCP | grep LISTEN'
 alias screen='screen -R -D'
-alias ps-grep="grep -r --exclude-dir '*/unibuild-work/*' --exclude-dir 'multiarch_build/*'"
 alias zfslist='zfs list -o name,used,avail,logicalused,refer,mountpoint,compression,compressratio,creation'
 alias VBoxHeadless='VBoxHeadless --vrde off'
 alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
@@ -336,6 +336,10 @@ fi
 
 # svn-color from JM Lacroix: https://github.com/jmlacroix/svn-color
 [ -f ~/.subversion/svn-color.sh ] && source ~/.subversion/svn-color.sh
+
+# perfSONAR related aliases
+alias ps-grep="grep -r --exclude-dir '*/unibuild-work/*' --exclude-dir 'multiarch_build/*'"
+alias ps-pass='PASSWORD_STORE_DIR=./.password-store pass'
 
 # perfSONAR Development with https://github.com/perfsonar/docker-devbox/
 [ -f /usr/local/share/docker-devbox/setup ] && eval $(/usr/local/share/docker-devbox/setup --aliases)
