@@ -18,6 +18,7 @@ shopt -s checkwinsize
 export MANWIDTH="tty"
 # Silence Docker advices
 export DOCKER_SCAN_SUGGEST=false
+export DOCKER_CLI_HINTS=false
 
 ### Setting a sane locale
 LANGUAGE="fr:es:en"
